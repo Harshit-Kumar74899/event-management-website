@@ -8,7 +8,7 @@ import java.util.Properties;
 public class EmailUtil {
 
     private static final String FROM_EMAIL = "harshitkumar.itm.092004@gmail.com";
-    private static final String APP_PASSWORD = "wgzqtynbybfsqyej";
+    private static final String APP_PASSWORD = "pehuszanocgfkpfs";
 
     // Common session creator
     private static Session createSession() {
