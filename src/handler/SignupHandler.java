@@ -57,7 +57,12 @@ public class SignupHandler implements HttpHandler {
             System.out.println("OTP for " + email + " is: " + otp);
 
             // TODO: send email here using EmailUtil
-            // EmailUtil.sendOtp(email, otp);
+            try {
+                util.EmailUtil.sendOtp(email, otp);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
 
             String response = "otp_sent";
 
