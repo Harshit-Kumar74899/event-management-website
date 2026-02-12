@@ -22,7 +22,7 @@ public class MainServer {
             );
 
             // 🔹 STATIC FILE HANDLER (HTML, CSS, JS)
-            server.createContext("/", new StaticFileHandler("web"));
+            server.createContext("/", new StaticFileHandler("src/web"));
 
             // 🔹 DYNAMIC PAGES / APIs (more specific paths win)
             server.createContext("/login", new LoginHandler());
