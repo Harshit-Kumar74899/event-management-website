@@ -15,7 +15,7 @@ public class MainServer {
     public static void main(String[] args) {
 
         try {
-            int port = 8081;
+            int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8081"));
 
             HttpServer server = HttpServer.create(
                     new InetSocketAddress(port), 0
