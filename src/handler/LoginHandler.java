@@ -3,10 +3,8 @@ package handler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class LoginHandler implements HttpHandler {
 
@@ -15,13 +13,27 @@ public class LoginHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
 
-        // Only allow GET request to open page
-        if (!exchange.getRequestMethod().equalsIgnoreCase("GET")) {
-            exchange.sendResponseHeaders(405, -1);
+        if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
+
+            sendFile(exchange, FILE_PATH);
             return;
         }
 
-        File file = new File(FILE_PATH);
+        if (exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+
+            String formData = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+
+            System.out.println("Login attempt: " + formData);
+
+            // TEMP: always success
+            exchange.getResponseHeaders().add("Location", "/");
+            exchange.sendResponseHeaders(302, -1);
+        }
+    }
+
+    private void sendFile(HttpExchange exchange, String path) throws IOException {
+
+        File file = new File(path);
 
         if (!file.exists()) {
             exchange.sendResponseHeaders(404, -1);
@@ -29,6 +41,7 @@ public class LoginHandler implements HttpHandler {
         }
 
         FileInputStream fis = new FileInputStream(file);
+
         byte[] data = fis.readAllBytes();
         fis.close();
 
