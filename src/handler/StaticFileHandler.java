@@ -3,8 +3,10 @@ package handler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.OutputStream;
 
 public class StaticFileHandler implements HttpHandler {
 
@@ -20,26 +22,28 @@ public class StaticFileHandler implements HttpHandler {
         String path = exchange.getRequestURI().getPath();
 
         if (path.equals("/")) {
-            path = "/index.html";
+            path = "/index.html"; // Index page
         }
 
-        // 🔥 Load from classpath
-        InputStream is =
-                getClass().getResourceAsStream("/" + root + path);
+        File file = new File(root + path);
 
-        if (is == null) {
+        if (!file.exists() || file.isDirectory()) {
             exchange.sendResponseHeaders(404, -1);
             return;
         }
 
-        byte[] data = is.readAllBytes();
+        FileInputStream fis = new FileInputStream(file);
+        byte[] data = fis.readAllBytes();
+        fis.close();
 
         exchange.getResponseHeaders()
                 .set("Content-Type", getContentType(path));
 
         exchange.sendResponseHeaders(200, data.length);
-        exchange.getResponseBody().write(data);
-        exchange.close();
+
+        OutputStream os = exchange.getResponseBody();
+        os.write(data);
+        os.close();
     }
 
     private String getContentType(String path) {
