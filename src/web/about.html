@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>About Us | Shubh Mangalamh Events</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg,#1a1640,#3a3a7a,#682b50);
+      color:white;
+      overflow-x:hidden;
+    }
+
+    .header{
+      text-align:center;
+      padding:40px 20px;
+    }
+
+    .header h1{
+      font-size:45px;
+      color:#ffd700;
+      margin-bottom:10px;
+      text-shadow:0 5px 15px rgba(0,0,0,0.6);
+    }
+
+    .header p{
+      font-size:18px;
+      max-width:750px;
+      margin:auto;
+      color:#ddd;
+      line-height:1.6;
+    }
+
+    .about-container{
+      max-width:1100px;
+      margin:40px auto;
+      padding:30px;
+      display:flex;
+      gap:40px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    .owner-card{
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.15);
+      border-radius:20px;
+      padding:25px;
+      width:320px;
+      text-align:center;
+      box-shadow:0 15px 40px rgba(0,0,0,0.45);
+      transition:0.3s;
+    }
+
+    .owner-card:hover{
+      transform:translateY(-8px);
+    }
+
+    .owner-card img{
+      width:140px;
+      height:140px;
+      border-radius:50%;
+      border:4px solid #ffd700;
+      object-fit:cover;
+      margin-bottom:15px;
+    }
+
+    .owner-card h2{
+      margin:8px 0;
+      font-size:26px;
+      color:#ffd700;
+    }
+
+    .owner-card p{
+      font-size:15px;
+      color:#ddd;
+      margin:6px 0;
+    }
+
+    .company-info{
+      flex:1;
+      min-width:320px;
+      background:rgba(255,255,255,0.08);
+      border-radius:20px;
+      padding:30px;
+      box-shadow:0 15px 40px rgba(0,0,0,0.45);
+      position:relative;
+    }
+
+    .company-info h2{
+      color:#ffd700;
+      font-size:32px;
+      margin-bottom:15px;
+    }
+
+    .company-info p{
+      font-size:16px;
+      line-height:1.7;
+      color:#eee;
+    }
+
+    .services{
+      margin-top:20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    .services li{
+      margin:10px 0;
+      font-size:16px;
+      color:#fff;
+    }
+
+    .more-services{
+      display:inline-block;
+      white-space:nowrap;
+      margin-top:40px;
+      color:#ffd700;
+      font-weight:bold;
+      text-decoration:none;
+      padding:10px 14px;
+      border-radius:12px;
+      background:rgba(255,215,0,0.12);
+      border:1px solid rgba(255,215,0,0.25);
+      transition:0.25s;
+      height:fit-content;
+    }
+    .more-services:hover{
+      background:rgba(255,215,0,0.18);
+      transform:translateY(-2px);
+    }
+
+    .contact-box{
+      margin-top:25px;
+      padding:18px;
+      border-radius:15px;
+      background:rgba(255,215,0,0.12);
+      border:1px solid rgba(255,215,0,0.25);
+    }
+
+    .contact-box h3{
+      margin:0 0 10px;
+      color:#ffd700;
+    }
+
+    .contact-box p{
+      margin:6px 0;
+      font-size:15px;
+    }
+
+    .back-btn{
+      display:block;
+      width:200px;
+      margin:40px auto;
+      padding:14px;
+      text-align:center;
+      border-radius:14px;
+      background:#ffd700;
+      color:#222;
+      font-weight:bold;
+      text-decoration:none;
+      transition:0.3s;
+    }
+
+    .back-btn:hover{
+      background:#ffb703;
+      transform:scale(1.05);
+    }
+
+    @media(max-width:768px){
+      .header h1{ font-size:34px; }
+      .about-container{ padding:15px; }
+      .more-services{ margin-top:14px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>About Shubh Mangalamh Events</h1>
+    <p>
+      We specialize in creating unforgettable wedding celebrations,
+      premium decorations, and memorable event experiences with elegance,
+      creativity, and perfection.
+    </p>
+  </div>
+
+  <div class="about-container">
+
+    <div class="owner-card">
+      <img src="images/Bhai.jpeg" alt="Owner Photo">
+      <h2>Prince Chopra</h2>
+      <p>Founder & Event Planner</p>
+      <p>✨ Turning Dreams Into Grand Celebrations ✨</p>
+    </div>
+
+    <div class="company-info">
+      <h2>Who We Are?</h2>
+
+      <p>
+        <b>Shubh Mangalamh Events</b> is a professional event management company
+        dedicated to planning and executing luxurious weddings, receptions,
+        birthday parties, engagements, and cultural celebrations.
+      </p>
+
+      <p>
+        Our mission is simple: to make your special moments magical, stress-free,
+        and beautifully unforgettable.
+      </p>
+
+      <div class="services">
+        <div class="services-list">
+          <h3 style="color:#ffd700;">Our Special Services:</h3>
+          <ul>
+            <li>💍 Wedding Planning & Decoration</li>
+            <li>🎉 Birthday & Anniversary Events</li>
+            <li>🥂 Reception & Cocktail Parties</li>
+            <li>📸 Photography & Videography</li>
+            <li>🍽 Catering & Premium Hospitality</li>
+          </ul>
+        </div>
+
+        <a class="more-services" href="service.html">More Services</a>
+      </div>
+
+      <div class="contact-box">
+        <h3>Contact Details</h3>
+        <p>📧 Email: <b>shubhmangalamh.events@gmail.com</b></p>
+        <p>📞 Mobile: <b>+91 98765 43210</b></p>
+        <p>📍 Location: Indore, Madhya Pradesh</p>
+      </div>
+
+    </div>
+  </div>
+
+  <a href="dashboard.html" class="back-btn">⬅ Back to Dashboard</a>
+
+</body>
+</html>

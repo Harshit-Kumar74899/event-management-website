@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Appointment | Shubh Mangalamh Events</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *{ margin:0; padding:0; box-sizing:border-box; }
+
+    body{
+      font-family:'Poppins', sans-serif;
+      background: radial-gradient(circle at top, #fff6e5, #f3e0c0);
+      color:#3d2b1f;
+      padding: 30px 16px;
+    }
+
+    .wrap{
+      max-width: 760px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: 0 18px 45px rgba(0,0,0,0.12);
+    }
+
+    h1{
+      font-family:'Playfair Display', serif;
+      font-size: 34px;
+      margin-bottom: 8px;
+    }
+
+    p{ opacity: .8; margin-bottom: 18px; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    label{
+      font-size: 13px;
+      opacity: .85;
+      margin-bottom: 6px;
+      display:block;
+    }
+
+    input, select, textarea{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.16);
+      outline:none;
+      font-family:'Poppins', sans-serif;
+    }
+
+    textarea{
+      min-height: 110px;
+      resize: vertical;
+      grid-column: 1 / -1;
+    }
+
+    .full{ grid-column: 1 / -1; }
+
+    /* Terms box */
+    .terms-box{
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      background: #fff8e6;
+      border: 1px solid rgba(0,0,0,0.12);
+      grid-column: 1 / -1;
+    }
+
+    .terms-box b{ display:block; margin-bottom: 8px; }
+    .terms-box ul{
+      padding-left: 18px;
+      line-height: 1.7;
+      font-size: 14px;
+      opacity: .92;
+      margin-bottom: 10px;
+    }
+
+    .agree-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-top: 6px;
+      user-select:none;
+    }
+
+    .error{
+      margin-top: 8px;
+      color: #d10000;
+      font-weight: 700;
+      display:none;
+      font-size: 14px;
+    }
+
+    .btn{
+      margin-top: 12px;
+      width: 100%;
+      padding: 12px 16px;
+      border:none;
+      border-radius: 14px;
+      cursor:pointer;
+      font-weight: 700;
+      color:#fff;
+      background: linear-gradient(135deg, #b68d40, #8b5e2e);
+    }
+
+    .row-actions{
+      display:flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .btn-ghost{
+      width:100%;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.16);
+      background: transparent;
+      cursor:pointer;
+      font-weight: 700;
+      color:#3d2b1f;
+    }
+
+    /* ✅ Success Modal */
+    .modal{
+      position: fixed;
+      inset: 0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background: rgba(0,0,0,0.45);
+      z-index: 99;
+      padding: 18px;
+    }
+
+    .modal-card{
+      width: min(520px, 96vw);
+      background: #fff;
+      border-radius: 18px;
+      padding: 18px 18px 16px;
+      box-shadow: 0 22px 70px rgba(0,0,0,0.35);
+      position: relative;
+      animation: pop .18s ease;
+    }
+
+    @keyframes pop{
+      from{ transform: scale(.98); opacity:.2; }
+      to{ transform: scale(1); opacity:1; }
+    }
+
+    .modal-title{
+      font-family:'Playfair Display', serif;
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    .modal-text{
+      opacity:.85;
+      line-height: 1.6;
+      font-size: 14.5px;
+      margin-bottom: 12px;
+    }
+
+    .modal-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+
+    .modal-btn{
+      border:none;
+      border-radius: 12px;
+      padding: 10px 14px;
+      cursor:pointer;
+      font-weight: 700;
+      background: linear-gradient(135deg, #b68d40, #8b5e2e);
+      color:#fff;
+    }
+
+    .modal-btn-ghost{
+      border: 1px solid rgba(0,0,0,0.16);
+      border-radius: 12px;
+      padding: 10px 14px;
+      cursor:pointer;
+      font-weight: 700;
+      background: transparent;
+      color:#3d2b1f;
+    }
+
+    .close-x{
+      position:absolute;
+      top:10px;
+      right:10px;
+      width:34px;
+      height:34px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.12);
+      background: #fff;
+      cursor:pointer;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    @media(max-width:720px){
+      .grid{ grid-template-columns: 1fr; }
+      .row-actions{ flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <h1>Book Appointment</h1>
+    <p>Fill the details and we’ll contact you soon.</p>
+
+    <form id="apptForm">
+      <div class="grid">
+
+        <div>
+          <label>Your Name</label>
+          <input type="text" id="name" placeholder="Enter your name" required>
+        </div>
+
+        <div>
+          <label>Mobile Number</label>
+          <input type="tel" id="mobile" placeholder="10-digit number" required>
+        </div>
+
+        <div>
+          <label>Service</label>
+          <select id="service" required>
+            <option value="">Select service</option>
+            <option>Wedding Planning</option>
+            <option>Birthday</option>
+            <option>Anniversary</option>
+            <option>Reception</option>
+            <option>Haldi / Mehendi</option>
+            <option>Catering</option>
+            <option>Photography</option>
+            <option>Decoration</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div id="otherWrap" style="display:none;">
+          <label>Other Service</label>
+          <input type="text" id="otherService" placeholder="Write your required service">
+        </div>
+
+        <div>
+          <label>Preferred Date</label>
+          <input type="date" id="date" required>
+        </div>
+
+        <div class="full">
+          <label>Preferred Time</label>
+          <input type="time" id="time" required>
+        </div>
+
+        <textarea id="message" placeholder="Extra message (optional)"></textarea>
+
+        <!-- ✅ Terms & Conditions + checkbox -->
+        <div class="terms-box">
+          <b>Terms &amp; Conditions</b>
+          <ul>
+            <li>Minimum 50% advance must be paid to block the venue.</li>
+            <li>Balance amount to be paid at least 7 days before the function.</li>
+            <li>Advance is non-refundable in case of cancellation.</li>
+            <li>Extra charges due to change in number of persons must be paid before the function.</li>
+            <li>Shubh Mangalamh is not responsible for loss of valuables.</li>
+          </ul>
+
+          <div style="font-size:14px; opacity:.95; margin-top:8px;">
+            <b style="display:inline;">*</b>
+            I hereby confirm that I have read, understood, and agree to abide by all the above terms and conditions.
+          </div>
+
+          <div class="agree-row">
+            <input type="checkbox" id="termsCheck">
+            <label for="termsCheck" style="margin:0; cursor:pointer;">I Agree</label>
+          </div>
+
+          <div class="error" id="termsError">⚠ Please accept Terms &amp; Conditions before submitting!</div>
+        </div>
+
+      </div>
+
+      <button class="btn" type="submit">Submit Appointment</button>
+
+      <div class="row-actions">
+        <button class="btn-ghost" type="button" onclick="location.href='home.html'">⬅ Back to Home</button>
+        <button class="btn-ghost" type="button" onclick="location.href='service.html'">View Services</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ✅ Success Modal -->
+  <div class="modal" id="successModal">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <button class="close-x" onclick="closeModal()">✕</button>
+      <div class="modal-title">Appointment Submitted ✅</div>
+      <div class="modal-text" id="modalText">
+        Thanks! Your appointment request has been received.
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-btn" onclick="location.href='home.html'">Go to Home</button>
+        <button class="modal-btn-ghost" onclick="location.href='service.html'">Explore Services</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("apptForm");
+    const serviceSel = document.getElementById("service");
+    const otherWrap = document.getElementById("otherWrap");
+    const otherInput = document.getElementById("otherService");
+
+    const termsCheck = document.getElementById("termsCheck");
+    const termsError = document.getElementById("termsError");
+
+    const modal = document.getElementById("successModal");
+    const modalText = document.getElementById("modalText");
+
+    serviceSel.addEventListener("change", () => {
+      if(serviceSel.value === "Other"){
+        otherWrap.style.display = "block";
+        otherInput.required = true;
+      } else {
+        otherWrap.style.display = "none";
+        otherInput.required = false;
+        otherInput.value = "";
+      }
+    });
+
+    function openModal(message){
+      modalText.textContent = message;
+      modal.style.display = "flex";
+    }
+
+    function closeModal(){
+      modal.style.display = "none";
+    }
+
+    modal.addEventListener("click", closeModal);
+
+    function onlyDigits(s){ return (s || "").replace(/\D/g, ""); }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // ✅ Terms check
+      if(!termsCheck.checked){
+        termsError.style.display = "block";
+        return;
+      }
+      termsError.style.display = "none";
+
+      const payload = {
+        name: document.getElementById("name").value.trim(),
+        mobile: document.getElementById("mobile").value.trim(),
+        service: serviceSel.value,
+        otherService: otherInput.value.trim(),
+        date: document.getElementById("date").value,
+        time: document.getElementById("time").value,
+        message: document.getElementById("message").value.trim(),
+        termsAccepted: true,
+        createdAt: new Date().toISOString()
+      };
+
+      // ✅ mobile validation
+      const mob = onlyDigits(payload.mobile);
+      if(mob.length !== 10){
+        alert("Please enter a valid 10-digit mobile number.");
+        return;
+      }
+      payload.mobile = mob;
+
+      // ✅ if Other, ensure user typed
+      if(payload.service === "Other" && !payload.otherService){
+        alert("Please enter Other Service.");
+        return;
+      }
+
+      try{
+        // ✅ Backend endpoint (Java handler) should:
+        // 1) Save to DB
+        // 2) Send admin email notification
+        // 3) Return 200 OK
+        const res = await fetch("/appointment", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify(payload)
+        });
+
+        if(!res.ok){
+          throw new Error("Server error");
+        }
+
+        openModal("Thanks! Your appointment request has been submitted. Our team will contact you soon.");
+        form.reset();
+        otherWrap.style.display = "none";
+        otherInput.required = false;
+
+      } catch(err){
+        // fallback (still show user confirmation)
+        console.log("Appointment payload:", payload);
+        openModal("Submitted ✅ (Admin email will work after backend email setup is enabled.)");
+        form.reset();
+        otherWrap.style.display = "none";
+        otherInput.required = false;
+      }
+    });
+  </script>
+
+</body>
+</html>

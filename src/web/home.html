@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shubh Mangalamh Events</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *{ margin:0; padding:0; box-sizing:border-box; }
+
+    body{
+      font-family:'Poppins', sans-serif;
+      /* ✅ background thoda aur attractive */
+      background:
+        radial-gradient(circle at top, #fff6e5, #f1d7ad),
+        linear-gradient(135deg, rgba(182,141,64,0.08), rgba(139,94,46,0.06));
+      color:#3d2b1f;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:20px 60px;
+    }
+
+    .logo-img{
+      height:200px;
+      width:auto;
+      display:block;
+      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.18));
+    }
+
+    nav a{
+      margin-left:30px;
+      text-decoration:none;
+      color:#3d2b1f;
+      font-weight:500;
+      position:relative;
+    }
+
+    nav a::after{
+      content:'';
+      position:absolute;
+      width:0;
+      height:2px;
+      background:#b68d40;
+      left:0;
+      bottom:-5px;
+      transition:0.3s;
+    }
+    nav a:hover::after{ width:100%; }
+
+    .hero{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      padding:80px 60px;
+      align-items:center;
+      gap:30px;
+    }
+
+    .hero-text h1{
+      font-family:'Playfair Display', serif;
+      font-size:52px;
+      line-height:1.2;
+      margin-bottom:20px;
+    }
+
+    .hero-text p{
+      font-size:18px;
+      opacity:0.85;
+      margin-bottom:22px;
+    }
+
+    .hero-link{
+      display:inline-block;
+      padding:14px 36px;
+      font-size:16px;
+      background: linear-gradient(135deg, #b68d40, #8b5e2e);
+      color:#fff;
+      border-radius:30px;
+      text-decoration:none;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .hero-link:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    /* ✅ 1) Past Event thoda neeche */
+    .past-event{
+      margin-top:12px;
+    }
+
+    .hero-card{
+      background:#fff;
+      border-radius:20px;
+      padding:40px;
+      box-shadow:0 25px 60px rgba(0,0,0,0.15);
+      text-align:center;
+      position:relative;
+    }
+
+    .hero-card::before{
+      content:'';
+      position:absolute;
+      inset:15px;
+      border:2px dashed #d6b26a;
+      border-radius:15px;
+    }
+
+    .hero-card h2{
+      font-family:'Playfair Display', serif;
+      font-size:30px;
+      margin-bottom:10px;
+    }
+
+    .hero-card span{
+      display:block;
+      margin:15px 0;
+      font-size:14px;
+      letter-spacing:3px;
+    }
+
+    /* ✅ Book Appointment bottom */
+    .book-appointment-bottom{
+      padding: 0 60px 10px;
+      display:flex;
+      justify-content:flex-end; /* ✅ 2) right side shift */
+      padding-right:120px;      /* ✅ thoda aur right feel */
+    }
+
+    /* ✅ NEW: Terms + Reviews two column */
+    .info-row{
+      padding: 10px 60px 60px;
+      display:grid;
+      grid-template-columns: 1fr 1.25fr; /* left terms, right reviews */
+      gap:22px;
+      align-items:start;
+    }
+
+    .terms-wrap, .reviews-wrap{
+      background:#fff;
+      border-radius:20px;
+      padding:24px;
+      box-shadow:0 18px 45px rgba(0,0,0,0.10);
+    }
+
+    .terms-wrap h2, .reviews-wrap h2{
+      font-family:'Playfair Display', serif;
+      font-size:28px;
+      margin-bottom:12px;
+    }
+
+    .terms-wrap ul{
+      margin-top:10px;
+      padding-left:18px;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .terms-wrap li{
+      margin:8px 0;
+      opacity:0.92;
+    }
+
+    /* ✅ REVIEWS (right side) */
+    .review-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:18px;
+      margin-top:14px;
+    }
+
+    .review-card{
+      border:1px solid rgba(0,0,0,0.08);
+      border-radius:16px;
+      padding:16px;
+      background: #fffaf0;
+    }
+
+    .review-card .name{
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .review-card .meta{
+      font-size:13px;
+      opacity:0.75;
+      margin-bottom:8px;
+    }
+
+    .review-card .text{
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .add-review{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      align-items:start;
+    }
+
+    .add-review input, .add-review select, .add-review textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid rgba(0,0,0,0.15);
+      font-family:'Poppins', sans-serif;
+      outline:none;
+    }
+
+    .add-review textarea{ min-height:92px; grid-column: 1 / -1; resize:vertical; }
+
+    .btn{
+      grid-column: 1 / -1;
+      padding:12px 16px;
+      border:none;
+      border-radius:14px;
+      cursor:pointer;
+      font-weight:600;
+      color:#fff;
+      background: linear-gradient(135deg, #b68d40, #8b5e2e);
+    }
+
+    footer{
+      text-align:center;
+      padding:25px;
+      background:#3d2b1f;
+      color:#fff;
+      margin-top:40px;
+    }
+
+    @media(max-width:900px){
+      header{ padding:18px 20px; }
+      .hero{ grid-template-columns:1fr; padding:50px 20px; }
+      nav a{ margin-left:18px; }
+      .logo-img{ height:58px; }
+
+      .book-appointment-bottom{
+        padding: 0 20px 10px;
+        justify-content:center; /* mobile pe center hi rahe */
+        padding-right:0;
+      }
+
+      .info-row{
+        padding: 0 20px 40px;
+        grid-template-columns: 1fr; /* mobile: stack */
+      }
+      .review-grid{ grid-template-columns: 1fr; }
+      .add-review{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="images/logo1.png" class="logo-img" alt="Shubh Mangalamh Events Logo">
+    </div>
+
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="service.html">Service</a>
+      <a href="about.html">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>𝐒𝐡𝐮𝐛𝐡 𝐌𝐚𝐧𝐠𝐚𝐥𝐚𝐦𝐡 𝐄𝐯𝐞𝐧𝐭𝐬</h1>
+      <p>Traditional elegance with a modern royal touch. Crafted for unforgettable weddings.</p>
+
+      <!-- ✅ Past Event (neeche) -->
+  <a class="hero-link" href="past-events.html">Past Event</a>
+
+    </div>
+
+    <div class="hero-card">
+      <h2>Wedding Invitation</h2>
+      <span>— Save The Date —</span>
+      <p>With blessings of family & friends</p>
+    </div>
+  </section>
+
+  <!-- ✅ Book Appointment (right shift) -->
+  <div class="book-appointment-bottom">
+    <a class="hero-link" href="appointment.html">Book Appointment</a>
+
+  </div>
+
+  <!-- ✅ Left: Terms | Right: What People Say -->
+  <section class="info-row">
+
+    <!-- LEFT TERMS -->
+    <div class="terms-wrap">
+      <h2>Terms &amp; Conditions</h2>
+      <ul>
+        <li>Minimum 50% advance must be paid to block the venue.</li>
+        <li>Balance amount to be paid at least 7 days before the function.</li>
+        <li>Advance is non-refundable in case of cancellation.</li>
+        <li>Extra charges due to change in number of persons must be paid before the function.</li>
+        <li>Shubh Mangalamh is not responsible for loss of valuables.</li>
+      </ul>
+    </div>
+
+    <!-- RIGHT REVIEWS -->
+    <div class="reviews-wrap">
+      <h2>What People Say</h2>
+      <p style="opacity:.8;">Real experiences from our clients. You can also add your review below.</p>
+
+      <div class="review-grid" id="reviewGrid"></div>
+
+      <div class="add-review">
+        <input id="rvName" type="text" placeholder="Your Name" />
+        <select id="rvRating">
+          <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+          <option value="4">⭐⭐⭐⭐ (4)</option>
+          <option value="3">⭐⭐⭐ (3)</option>
+          <option value="2">⭐⭐ (2)</option>
+          <option value="1">⭐ (1)</option>
+        </select>
+        <textarea id="rvText" placeholder="Write your review..."></textarea>
+        <button class="btn" onclick="addReview()">Submit Review</button>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>
+    © 2021 Shubh Mangalamh Events
+  </footer>
+
+  <script>
+    const DEFAULT_REVIEWS = [
+      { name: "Riya", rating: 5, text: "Beautiful decor and very professional team. Loved the arrangements!" },
+      { name: "Aman", rating: 5, text: "On-time service and great management. Stress-free experience." },
+      { name: "Neha", rating: 4, text: "Great catering and hospitality. Everything was well organized." }
+    ];
+
+    function loadReviews(){
+      const saved = localStorage.getItem("reviews_sme");
+      let reviews = [];
+      if(saved){
+        try { reviews = JSON.parse(saved) || []; } catch(e){ reviews = []; }
+      }
+      if(!saved || reviews.length === 0){
+        reviews = DEFAULT_REVIEWS;
+        localStorage.setItem("reviews_sme", JSON.stringify(reviews));
+      }
+      renderReviews(reviews);
+    }
+
+    function renderReviews(reviews){
+      const grid = document.getElementById("reviewGrid");
+      grid.innerHTML = "";
+      reviews.slice().reverse().forEach(r => {
+        const stars = "⭐".repeat(Number(r.rating || 5));
+        const card = document.createElement("div");
+        card.className = "review-card";
+        card.innerHTML = `
+          <div class="name">${escapeHtml(r.name || "User")}</div>
+          <div class="meta">${stars}</div>
+          <div class="text">${escapeHtml(r.text || "")}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function addReview(){
+      const name = document.getElementById("rvName").value.trim();
+      const rating = document.getElementById("rvRating").value;
+      const text = document.getElementById("rvText").value.trim();
+
+      if(!name || !text){
+        alert("Please enter your name and review.");
+        return;
+      }
+
+      const saved = localStorage.getItem("reviews_sme");
+      let reviews = [];
+      if(saved){
+        try { reviews = JSON.parse(saved) || []; } catch(e){ reviews = []; }
+      }
+
+      reviews.push({ name, rating: Number(rating), text });
+      localStorage.setItem("reviews_sme", JSON.stringify(reviews));
+
+      document.getElementById("rvName").value = "";
+      document.getElementById("rvRating").value = "5";
+      document.getElementById("rvText").value = "";
+
+      renderReviews(reviews);
+      alert("Thanks! Your review has been added.");
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    loadReviews();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Run MainServer",
+      "request": "launch",
+      "mainClass": "MainServer",
+      "cwd": "${workspaceFolder}/src",
+      "classPaths": [
+        "${workspaceFolder}/src",
+        "${workspaceFolder}/lib/*"
+      ]
+    }
+  ]
+}

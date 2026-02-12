@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial;
+    height:100vh;
+    overflow:hidden;
+}
+
+/* ===== BACKGROUND SLIDER (ADVANCED) ===== */
+.bg-slider{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    z-index:-1;
+}
+
+/* first image always visible (no blank screen) */
+.bg-slider img{
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:0;
+}
+
+/* ✅ first image fixed visible */
+.bg-slider img:first-child{
+    opacity:1;
+}
+
+/* Each image: fast enter + 2-3 sec hold + fade out */
+.bg-slider img:nth-child(1){ animation: none; } /* stays behind always */
+.bg-slider img:nth-child(2){ animation: slideFromBottom 21s infinite; animation-delay:0s; }
+.bg-slider img:nth-child(3){ animation: slideFromRight 21s infinite; animation-delay:3s; }
+.bg-slider img:nth-child(4){ animation: slideFromTop 21s infinite; animation-delay:6s; }
+.bg-slider img:nth-child(5){ animation: slideFromLeft 21s infinite; animation-delay:9s; }
+.bg-slider img:nth-child(6){ animation: slideFromCorner 21s infinite; animation-delay:12s; }
+.bg-slider img:nth-child(7){ animation: slideFromBottom 21s infinite; animation-delay:15s; }
+
+/* ===== ANIMATIONS (FAST ENTRY + HOLD) ===== */
+@keyframes slideFromLeft{
+    0%   {transform:translateX(-60%); opacity:0;}
+    8%   {transform:translateX(0);    opacity:1;}
+    55%  {transform:translateX(0);    opacity:1;}
+    70%  {transform:translateX(0);    opacity:0;}
+    100% {opacity:0;}
+}
+
+@keyframes slideFromRight{
+    0%   {transform:translateX(60%); opacity:0;}
+    8%   {transform:translateX(0);   opacity:1;}
+    55%  {transform:translateX(0);   opacity:1;}
+    70%  {transform:translateX(0);   opacity:0;}
+    100% {opacity:0;}
+}
+
+@keyframes slideFromTop{
+    0%   {transform:translateY(-60%); opacity:0;}
+    8%   {transform:translateY(0);    opacity:1;}
+    55%  {transform:translateY(0);    opacity:1;}
+    70%  {transform:translateY(0);    opacity:0;}
+    100% {opacity:0;}
+}
+
+@keyframes slideFromBottom{
+    0%   {transform:translateY(60%); opacity:0;}
+    8%   {transform:translateY(0);   opacity:1;}
+    55%  {transform:translateY(0);   opacity:1;}
+    70%  {transform:translateY(0);   opacity:0;}
+    100% {opacity:0;}
+}
+
+@keyframes slideFromCorner{
+    0%   {transform:translate(60%,60%); opacity:0;}
+    8%   {transform:translate(0,0);     opacity:1;}
+    55%  {transform:translate(0,0);     opacity:1;}
+    70%  {transform:translate(0,0);     opacity:0;}
+    100% {opacity:0;}
+}
+
+/* ===== OVERLAY ===== */
+.overlay{
+    height:100vh;
+    background:rgba(0,0,0,0.55);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* TITLE */
+.title{
+    position:absolute;
+    top:30px;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:18px;
+    color:#ffd700;
+    font-size:36px;
+    font-weight:700;
+    transform: translateX(-18px);
+}
+
+.title-logo{
+    height:130px;
+    width:auto;
+    background: transparent;
+    border-radius:0;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
+}
+
+/* ===== PROFILE ===== */
+.profile-box{
+    position:absolute;
+    top:20px;
+    right:30px;
+    z-index:20;
+}
+
+.profile-circle{
+    width:50px;
+    height:50px;
+    background:#ffd700;
+    color:#6a1b9a;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:22px;
+    font-weight:bold;
+    cursor:pointer;
+    user-select:none;
+}
+
+.dropdown{
+    position:absolute;
+    top:60px;
+    right:0;
+    display:none;
+}
+
+.login-link{
+    font-size:18px;
+    cursor:pointer;
+    color:#ffd700;
+}
+
+/* ===== CARDS ===== */
+.cards-wrapper{
+    background:rgba(255,243,224,0.25);
+    padding:50px;
+    border-radius:28px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:35px;
+    width:620px;
+}
+
+.card{
+    background:#f3e5d8;
+    padding:45px 20px;
+    border-radius:18px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    color:#6a1b9a;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-10px) scale(1.06);
+    background:#e6c7a8;
+}
+
+.card::before, .card::after { content:none !important; }
+
+/* ===== WELCOME POPUP ===== */
+:root{
+  --card: linear-gradient(135deg, #1f1c2c, #2b1b3f, #3a1c32);
+  --text: #f9fafb;
+  --muted: #d1d5db;
+  --brand: #ffb703;
+  --accent: #ff914d;
+  --ring: rgba(255,145,77,.35);
+}
+
+.welcome-overlay{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:30;
+}
+
+.welcome-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.35);
+}
+
+.welcome-card{
+  max-width: 720px;
+  width: min(720px, 92vw);
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 18px;
+  padding: 22px 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,.45);
+  color: var(--text);
+  position: relative;
+  overflow: hidden;
+  z-index:31;
+  animation: popupIn .25s ease;
+}
+
+@keyframes popupIn{
+  from{ transform:scale(.96); opacity:.0; }
+  to{ transform:scale(1); opacity:1; }
+}
+
+.welcome-card::before{
+  content:"";
+  position:absolute;
+  top:0; left:0; right:0;
+  height:6px;
+  background: linear-gradient(90deg, var(--accent), var(--brand));
+}
+
+.welcome-badge{
+  display:inline-block;
+  font-size:12px;
+  font-weight:600;
+  color: var(--brand);
+  background: rgba(255,183,3,.12);
+  padding:6px 12px;
+  border-radius:999px;
+  margin-bottom:12px;
+}
+
+.welcome-title{
+  margin: 6px 0 10px;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.brand{
+  color: var(--brand);
+  font-weight: 900;
+}
+
+.welcome-text{
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.welcome-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.btn-primary{
+  border:none;
+  background: var(--accent);
+  color:#fff;
+  padding:10px 16px;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow: 0 10px 22px var(--ring);
+}
+
+.btn-ghost{
+  border:1px solid rgba(255,255,255,.25);
+  background: transparent;
+  color:#fff;
+  padding:10px 16px;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.welcome-close{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.25);
+  color:#fff;
+  cursor:pointer;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  line-height:1;
+}
+
+@media (max-width:480px){
+  .welcome-title{ font-size:18px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+<div class="bg-slider">
+    <img src="images/b1.jpeg">
+    <img src="images/b2.jpeg">
+    <img src="images/b3.jpeg">
+    <img src="images/b4.jpeg">
+    <img src="images/b5.jpeg">
+    <img src="images/b6.jpeg">
+    <img src="images/b7.jpeg">
+</div>
+
+<!-- PROFILE -->
+<div class="profile-box" id="profileBox"></div>
+
+<!-- CONTENT -->
+<div class="overlay">
+
+ <div class="title">
+  <img src="images/logo1.png" class="title-logo" alt="logo">
+  <span>Welcome to 𝐒𝐡𝐮𝐛𝐡 𝐌𝐚𝐧𝐠𝐚𝐥𝐚𝐦𝐡 𝐄𝐯𝐞𝐧𝐭𝐬</span>
+ </div>
+
+    <div class="cards-wrapper">
+        <div class="cards">
+            <div class="card" onclick="goHome()">🏠 Home</div>
+            <div class="card" onclick="goServices()">🎉 Services</div>
+            <div class="card" onclick="goVenue()">🏰 Past Events</div>
+            <div class="card" onclick="goAbout()">📖 About</div>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ WELCOME POPUP -->
+<div class="welcome-overlay" id="welcomeOverlay">
+  <div class="welcome-backdrop" onclick="hideWelcome()"></div>
+
+  <div class="welcome-card" id="welcomeCard" onclick="event.stopPropagation()">
+    <button class="welcome-close" id="welcomeClose" onclick="hideWelcome()">✕</button>
+
+    <div class="welcome-badge">Login Successful</div>
+
+    <h2 class="welcome-title">
+      Welcome to <span class="brand">𝐒𝐡𝐮𝐛𝐡 𝐌𝐚𝐧𝐠𝐚𝐥𝐚𝐦𝐡 𝐄𝐯𝐞𝐧𝐭𝐬</span>
+    </h2>
+
+    <p class="welcome-text">
+      Thank you for logging in. We’re delighted to have you with us.
+      Let’s create memorable celebrations together.
+    </p>
+
+    <div class="welcome-actions">
+      <button class="btn-primary" onclick="goToServices()">Explore Services</button>
+      <button class="btn-ghost" onclick="hideWelcome()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================
+   PROFILE + WELCOME (FINAL FIX)
+   ========================= */
+
+/* ✅ Storage keys:
+   localStorage.setItem("userName", "..."),
+   localStorage.setItem("userEmail", "...")
+*/
+function getLoggedInUser(){
+  const name  = localStorage.getItem("userName")  || sessionStorage.getItem("userName")  || "";
+  const email = localStorage.getItem("userEmail") || sessionStorage.getItem("userEmail") || "";
+  if(!name && !email) return null;
+  return { name, email };
+}
+
+let loggedInUser = getLoggedInUser();
+const profileBox = document.getElementById("profileBox");
+
+function renderProfile(){
+  if(loggedInUser){
+    const safeName = (loggedInUser.name || "User").trim();
+    const firstLetter = safeName.charAt(0).toUpperCase();
+    const safeEmail = (loggedInUser.email || "").trim();
+
+    profileBox.innerHTML = `
+      <div class="profile-circle" onclick="toggleDropdown(event)">
+        ${firstLetter}
+      </div>
+
+      <div class="dropdown" id="dropdown">
+        <div style="
+          background:#fff;
+          color:#333;
+          padding:12px 15px;
+          border-radius:14px;
+          min-width:220px;
+          box-shadow:0 8px 25px rgba(0,0,0,0.35);
+        ">
+          <div style="font-weight:bold; color:#6a1b9a; margin-bottom:4px;">
+            ${safeName}
+          </div>
+
+          <div style="font-size:13px; color:#666; margin-bottom:10px;">
+            ${safeEmail ? safeEmail : "—"}
+          </div>
+
+          <button onclick="logout()" style="
+            width:100%;
+            background:#ff5252;
+            color:white;
+            border:none;
+            padding:8px;
+            border-radius:12px;
+            cursor:pointer;
+            font-weight:bold;
+          ">
+            Logout
+          </button>
+        </div>
+      </div>
+    `;
+  } else {
+    profileBox.innerHTML = `
+      <div class="login-link" onclick="goLogin()">Login</div>
+    `;
+  }
+}
+
+function toggleDropdown(event){
+  event.stopPropagation();
+  const drop = document.getElementById("dropdown");
+  if(!drop) return;
+  drop.style.display = (drop.style.display === "block") ? "none" : "block";
+}
+
+document.addEventListener("click", function(){
+  const drop = document.getElementById("dropdown");
+  if(drop) drop.style.display = "none";
+});
+
+function logout(){
+  // ✅ clear stored user
+  localStorage.removeItem("userName");
+  localStorage.removeItem("userEmail");
+  sessionStorage.removeItem("userName");
+  sessionStorage.removeItem("userEmail");
+
+  // ✅ next login par welcome fir se aaye
+  sessionStorage.removeItem("welcomeShown");
+
+  loggedInUser = null;
+  renderProfile();
+  location.href = "login";
+}
+
+function goLogin(){ location.href = "login"; }
+
+function hideWelcome(){
+  const overlay = document.getElementById("welcomeOverlay");
+  if(overlay) overlay.style.display = "none";
+}
+
+/* ✅ MAIN FIX: relative paths */
+function goServices(){ location.href = "service.html"; }
+function goAbout(){ location.href = "about.html"; }
+function goHome(){ location.href = "home.html"; }
+function goVenue(){ location.href = "past-events.html"; }
+
+
+/* ✅ Explore Services button (popup) */
+function goToServices(){
+  location.href = "service.html";
+}
+
+/* ✅ WELCOME POPUP: only once per session + only if logged in */
+(function handleWelcomePopup(){
+  const overlay = document.getElementById("welcomeOverlay");
+  if(!overlay) return;
+
+  if(!loggedInUser){
+    overlay.style.display = "none";
+    return;
+  }
+
+  const alreadyShown = sessionStorage.getItem("welcomeShown");
+  if(alreadyShown === "1"){
+    overlay.style.display = "none";
+    return;
+  }
+
+  overlay.style.display = "flex";
+  sessionStorage.setItem("welcomeShown", "1");
+
+  setTimeout(()=>{
+    const closeBtn = document.getElementById("welcomeClose");
+    if(closeBtn) closeBtn.style.display = "flex";
+  }, 10000);
+})();
+
+renderProfile();
+</script>
+
+</body>
+</html>

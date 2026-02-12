@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Loading...</title>
+
+  <style>
+    body{
+      margin:0;
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#000;
+      overflow:hidden;
+      font-family: Arial, sans-serif;
+    }
+
+    .logo{
+      width:200px;                 
+      height:auto;
+      animation: blink 0.7s infinite alternate;
+      filter: drop-shadow(0 0 28px rgba(255,215,0,0.55));
+    }
+
+    @keyframes blink{
+      from{ opacity:0.25; transform:scale(0.98); }
+      to  { opacity:1;    transform:scale(1.03); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ✅ Logo -->
+  <img src="images/logo1.png" class="logo" alt="Logo">
+
+  <script>
+    // ✅ Minimum 2 seconds ke baad Login page open
+    setTimeout(() => {
+
+      // ✅ Correct Redirect for your HttpServer setup
+      window.location.href = "/login";
+
+    }, 2000);
+  </script>
+
+</body>
+</html>

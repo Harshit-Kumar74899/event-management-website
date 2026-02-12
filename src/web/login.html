@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login | Royal Wedding Decor</title>
+
+<style>
+body{
+    margin:0;
+    font-family: "Segoe UI", Arial;
+    height:100vh;
+    overflow:hidden;
+
+    background: linear-gradient(
+        135deg,
+        #6a1b9a,
+        #d4af37,
+        #f8bbd0
+    );
+    background-size:400% 400%;
+    animation: gradientMove 12s ease infinite;
+}
+
+@keyframes gradientMove{
+    0%{ background-position:0% 50%; }
+    50%{ background-position:100% 50%; }
+    100%{ background-position:0% 50%; }
+}
+
+.overlay{
+    height:100vh;
+    background:rgba(0,0,0,0.45);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.box{
+    background:rgba(255,243,224,0.96);
+    padding:45px;
+    border-radius:20px;
+    width:360px;
+    text-align:center;
+    box-shadow:
+        0 18px 45px rgba(0,0,0,0.45),
+        inset 0 0 15px rgba(255,215,0,0.25);
+    animation: fadeUp 0.8s ease;
+}
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(25px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+h2{
+    color:#6a1b9a;
+    margin-bottom:18px;
+    letter-spacing:1px;
+}
+
+/* 🔔 MESSAGE BOX */
+#msg{
+    margin-bottom:15px;
+    color:#c62828;
+    font-weight:bold;
+    font-size:14px;
+}
+
+/* INPUTS */
+input{
+    width:100%;
+    padding:13px;
+    margin:12px 0;
+    border-radius:8px;
+    border:1px solid #d4af37;
+    font-size:15px;
+    outline:none;
+    transition:0.3s;
+}
+
+input:focus{
+    border-color:#6a1b9a;
+    box-shadow:0 0 8px rgba(106,27,154,0.4);
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:14px;
+    margin-top:18px;
+    background:linear-gradient(to right,#f8bbd0,#f48fb1);
+    color:#6a1b9a;
+    border:none;
+    border-radius:8px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.35s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* LINK */
+a{
+    display:inline-block;
+    margin-top:20px;
+    color:#6a1b9a;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:500;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay">
+    <div class="box">
+        <h2>User Login</h2>
+
+        <!-- 🔔 MESSAGE FROM BACKEND -->
+        <div id="msg"></div>
+
+        <form action="/login" method="post">
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <a href="/">← Back to Home</a>
+    </div>
+</div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const msg = params.get("msg");
+
+    if (msg === "exists") {
+        document.getElementById("msg").innerText =
+            "User already exists. Please login.";
+    }
+</script>
+
+</body>
+</html>

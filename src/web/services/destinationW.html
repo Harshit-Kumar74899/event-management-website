@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Destination Wedding | Shubh Mangalamh Events</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Poppins',sans-serif;background:radial-gradient(circle at top,#fff6e5,#f1d7ad),linear-gradient(135deg,rgba(182,141,64,.08),rgba(139,94,46,.06));color:#3d2b1f}
+    header{display:flex;justify-content:space-between;align-items:center;padding:16px 60px}
+    .logo-img{height:90px;filter:drop-shadow(0 6px 16px rgba(0,0,0,.18))}
+    nav a{margin-left:26px;text-decoration:none;color:#3d2b1f;font-weight:500;position:relative}
+    nav a::after{content:"";position:absolute;left:0;bottom:-5px;width:0;height:2px;background:#b68d40;transition:.3s}
+    nav a:hover::after{width:100%}
+    .wrap{padding:18px 60px 50px}
+    .hero{background:#fff;border-radius:22px;padding:22px;box-shadow:0 18px 45px rgba(0,0,0,.10);border:1px solid rgba(0,0,0,.06);display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+    .hero h1{font-family:'Playfair Display',serif;font-size:34px}
+    .hero p{opacity:.85;max-width:760px;line-height:1.7;margin-top:8px}
+    .pill{padding:10px 14px;border-radius:999px;background:rgba(182,141,64,.14);border:1px solid rgba(182,141,64,.25);font-weight:600}
+    .gallery{margin-top:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .ph{border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 14px 34px rgba(0,0,0,.10);border:1px solid rgba(0,0,0,.06);cursor:pointer}
+    .ph img{width:100%;height:190px;object-fit:cover;display:block}
+    .actions{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+    .btn{display:inline-block;padding:10px 14px;border-radius:14px;text-decoration:none;font-weight:600}
+    .btn-primary{background:linear-gradient(135deg,#b68d40,#8b5e2e);color:#fff}
+    .btn-ghost{border:1px solid rgba(0,0,0,.16);color:#3d2b1f}
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.86);display:none;align-items:center;justify-content:center;z-index:9999;padding:18px}
+    .lightbox.show{display:flex}
+    .lightbox img{max-width:92vw;max-height:92vh;border-radius:14px;box-shadow:0 0 25px rgba(255,255,255,.22)}
+    footer{text-align:center;padding:20px;background:#3d2b1f;color:#fff;margin-top:40px}
+    @media(max-width:1000px){header{padding:14px 20px}.wrap{padding:14px 20px 40px}.gallery{grid-template-columns:repeat(2,1fr)}.logo-img{height:58px}}
+    @media(max-width:520px){.gallery{grid-template-columns:1fr}.ph img{height:200px}}
+  </style>
+</head>
+<body>
+<header>
+  <img class="logo-img" src="images/logo1.png" alt="Logo">
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="service.html">Service</a>
+    <a href="about.html">Contact</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <h1>Destination Wedding</h1>
+      <p>Venue planning, travel coordination, premium decor & complete management — destination wedding made easy and classy.</p>
+    </div>
+    <div class="pill">🌿 Travel • Luxury</div>
+  </section>
+
+  <section class="gallery">
+    <div class="ph" onclick="openLB('images/services/destination1.jpg')"><img src="images/services/destination1.jpg" alt=""></div>
+    <div class="ph" onclick="openLB('images/services/destination2.jpg')"><img src="images/services/destination2.jpg" alt=""></div>
+    <div class="ph" onclick="openLB('images/services/destination3.jpg')"><img src="images/services/destination3.jpg" alt=""></div>
+    <div class="ph" onclick="openLB('images/services/destination4.jpg')"><img src="images/services/destination4.jpg" alt=""></div>
+  </section>
+
+  <div class="actions">
+    <a class="btn btn-primary" href="appointment.html">Book Appointment</a>
+    <a class="btn btn-ghost" href="past-events.html">View Past Events</a>
+  </div>
+</main>
+
+<footer>© 2021 Shubh Mangalamh Events</footer>
+
+<div class="lightbox" id="lb" onclick="closeLB()">
+  <img id="lbImg" src="" alt="">
+</div>
+
+<script>
+  function openLB(src){ document.getElementById('lbImg').src = src; document.getElementById('lb').classList.add('show'); }
+  function closeLB(){ document.getElementById('lb').classList.remove('show'); }
+</script>
+</body>
+</html>
