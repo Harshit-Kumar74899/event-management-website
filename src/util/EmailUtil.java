@@ -17,6 +17,7 @@ public class EmailUtil {
 
     private static final String FROM_EMAIL = "harshitkumar.itm.092004@gmail.com";
 
+    // ✅ SEND OTP TO USER
     public static void sendOtp(String toEmail, String otp) {
 
         Email from = new Email(FROM_EMAIL);
@@ -43,7 +44,39 @@ public class EmailUtil {
 
             Response response = sg.api(request);
 
-            System.out.println("Email sent: " + response.getStatusCode());
+            System.out.println("OTP Email sent: " + response.getStatusCode());
+
+        } catch (IOException ex) {
+
+            ex.printStackTrace();
+
+        }
+    }
+
+
+    // ✅ ADD THIS METHOD (FIXES YOUR ERROR)
+    public static void sendToAdmin(String subject, String body) {
+
+        Email from = new Email(FROM_EMAIL);
+        Email to = new Email(FROM_EMAIL);
+
+        Content content = new Content("text/plain", body);
+
+        Mail mail = new Mail(from, subject, to, content);
+
+        SendGrid sg = new SendGrid(API_KEY);
+
+        Request request = new Request();
+
+        try {
+
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+
+            Response response = sg.api(request);
+
+            System.out.println("Admin email sent: " + response.getStatusCode());
 
         } catch (IOException ex) {
 
