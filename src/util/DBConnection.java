@@ -5,23 +5,32 @@ import java.sql.DriverManager;
 
 public class DBConnection {
 
+    private static final String URL =
+            System.getenv("DB_URL");
+
+    private static final String USER =
+            System.getenv("DB_USER");
+
+    private static final String PASSWORD =
+            System.getenv("DB_PASSWORD");
+
     public static Connection getConnection() {
 
         try {
+
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/wedding_db",
-                    "root",
-                    "1234"
+            return DriverManager.getConnection(
+                    URL,
+                    USER,
+                    PASSWORD
             );
 
-            System.out.println("✅ DB Connected Successfully");
-            return con;
-
         } catch (Exception e) {
-            System.out.println("❌ DB Connection Error");
+
+            System.out.println("DB Connection Error");
             e.printStackTrace();
+
             return null;
         }
     }
