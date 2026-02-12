@@ -18,7 +18,7 @@ public class DashboardHandler implements HttpHandler {
             return;
         }
 
-        InputStream is = getClass().getResourceAsStream("/web/dashboard.html");
+        InputStream is = getClass().getResourceAsStream("src/web/dashboard.html");
 
         byte[] data = is.readAllBytes();
         exchange.sendResponseHeaders(200, data.length);
