@@ -20,15 +20,24 @@ public class EmailUtil {
     // ✅ SEND OTP TO USER
     public static void sendOtp(String toEmail, String otp) {
 
-        Email from = new Email(FROM_EMAIL);
+        Email from = new Email(FROM_EMAIL, "Royal Wedding Decor");
         Email to = new Email(toEmail);
 
         String subject = "Your OTP Code";
 
         Content content = new Content(
-                "text/plain",
-                "Your OTP is: " + otp + "\nDo not share this OTP."
-        );
+        "text/html",
+        "<div style='font-family:Arial,sans-serif; padding:20px;'>"
+      + "<h2 style='color:#2c3e50;'>Royal Wedding Decor</h2>"
+      + "<p>Hello,</p>"
+      + "<p>Your OTP for <b>Royal Wedding Decor</b> is:</p>"
+      + "<h1 style='color:#e74c3c; letter-spacing:5px;'>" + otp + "</h1>"
+      + "<p>Please do not share this OTP with anyone.</p>"
+      + "<br>"
+      + "<p style='color:gray;'>— Royal Wedding Decor Team</p>"
+      + "</div>"
+);
+
 
         Mail mail = new Mail(from, subject, to, content);
 
