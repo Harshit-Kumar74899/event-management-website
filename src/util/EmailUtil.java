@@ -8,26 +8,42 @@ import java.util.Properties;
 public class EmailUtil {
 
     private static final String FROM_EMAIL = "harshitkumar.itm.092004@gmail.com";
-
     private static final String APP_PASSWORD = "wgzqtynbybfsqyej";
 
-    // ✅ SEND OTP TO USER
-    public static void sendOtp(String toEmail, String otp) throws Exception {
+    // Common session creator
+    private static Session createSession() {
 
         Properties props = new Properties();
 
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
+
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
 
-        Session session = Session.getInstance(props, new Authenticator() {
+        // ✅ FIX: prevent Render timeout
+        props.put("mail.smtp.connectiontimeout", "15000");
+        props.put("mail.smtp.timeout", "15000");
+        props.put("mail.smtp.writetimeout", "15000");
 
+        // ✅ REQUIRED for TLS on Render
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+
+        Session session = Session.getInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(FROM_EMAIL, APP_PASSWORD);
             }
-
         });
+
+        session.setDebug(true);
+
+        return session;
+    }
+
+    // SEND OTP TO USER
+    public static void sendOtp(String toEmail, String otp) throws Exception {
+
+        Session session = createSession();
 
         Message message = new MimeMessage(session);
 
@@ -47,26 +63,13 @@ public class EmailUtil {
 
         Transport.send(message);
 
-        System.out.println("OTP sent to " + toEmail);
+        System.out.println("OTP email sent to " + toEmail);
     }
 
-    // ✅ SEND EMAIL TO ADMIN (used by AppointmentHandler)
+    // SEND EMAIL TO ADMIN
     public static void sendToAdmin(String subject, String body) throws Exception {
 
-        Properties props = new Properties();
-
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-
-        Session session = Session.getInstance(props, new Authenticator() {
-
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(FROM_EMAIL, APP_PASSWORD);
-            }
-
-        });
+        Session session = createSession();
 
         Message message = new MimeMessage(session);
 
