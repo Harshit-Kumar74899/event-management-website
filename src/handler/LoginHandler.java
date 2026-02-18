@@ -21,17 +21,54 @@ public class LoginHandler implements HttpHandler {
 
         if (exchange.getRequestMethod().equalsIgnoreCase("POST")) {
 
-            String formData = new String(
-                    exchange.getRequestBody().readAllBytes(),
-                    StandardCharsets.UTF_8
-            );
+    String formData = new String(
+            exchange.getRequestBody().readAllBytes(),
+            StandardCharsets.UTF_8
+    );
 
-            System.out.println("Login attempt: " + formData);
+    String email = null;
+    String password = null;
 
-            // ✅ redirect to dashboard
-            exchange.getResponseHeaders().add("Location", "/dashboard");
-            exchange.sendResponseHeaders(302, -1);
+    for (String pair : formData.split("&")) {
+        String[] kv = pair.split("=");
+        if (kv[0].equals("email")) {
+            email = java.net.URLDecoder.decode(kv[1], "UTF-8");
         }
+        if (kv[0].equals("password")) {
+            password = java.net.URLDecoder.decode(kv[1], "UTF-8");
+        }
+    }
+
+    System.out.println("Login attempt: " + email);
+
+    boolean success = dao.UserDAO.login(email, password);
+
+    if (success) {
+
+        // ✅ get user name
+        String name = dao.UserDAO.getNameByEmail(email);
+
+        // ✅ set cookies (SERVER SIDE SESSION)
+        exchange.getResponseHeaders().add(
+                "Set-Cookie",
+                "userEmail=" + email + "; Path=/"
+        );
+        exchange.getResponseHeaders().add(
+                "Set-Cookie",
+                "userName=" + name + "; Path=/"
+        );
+
+        exchange.getResponseHeaders().add("Location", "/dashboard");
+        exchange.sendResponseHeaders(302, -1);
+
+    } else {
+
+        // ❌ invalid login
+        exchange.getResponseHeaders().add("Location", "/login?error=1");
+        exchange.sendResponseHeaders(302, -1);
+    }
+}
+
     }
 
     private void sendFile(HttpExchange exchange, String path) throws IOException {

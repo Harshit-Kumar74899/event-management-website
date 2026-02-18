@@ -389,12 +389,22 @@ body{
    localStorage.setItem("userName", "..."),
    localStorage.setItem("userEmail", "...")
 */
+function getCookie(name){
+  const cookies = document.cookie.split(";");
+  for (let c of cookies){
+    let [k,v] = c.trim().split("=");
+    if(k === name) return v;
+  }
+  return null;
+}
+
 function getLoggedInUser(){
-  const name  = localStorage.getItem("userName")  || sessionStorage.getItem("userName")  || "";
-  const email = localStorage.getItem("userEmail") || sessionStorage.getItem("userEmail") || "";
-  if(!name && !email) return null;
+  const name  = getCookie("userName");
+  const email = getCookie("userEmail");
+  if(!name || !email) return null;
   return { name, email };
 }
+
 
 let loggedInUser = getLoggedInUser();
 const profileBox = document.getElementById("profileBox");
@@ -462,19 +472,18 @@ document.addEventListener("click", function(){
 });
 
 function logout(){
-  // ✅ clear stored user
-  localStorage.removeItem("userName");
-  localStorage.removeItem("userEmail");
-  sessionStorage.removeItem("userName");
-  sessionStorage.removeItem("userEmail");
 
-  // ✅ next login par welcome fir se aaye
-  sessionStorage.removeItem("welcomeShown");
+  // delete cookies
+  document.cookie = "userEmail=; Path=/; Max-Age=0";
+  document.cookie = "userName=; Path=/; Max-Age=0";
 
-  loggedInUser = null;
-  renderProfile();
+  // clear frontend state
+  sessionStorage.clear();
+  localStorage.clear();
+
   location.href = "login";
 }
+
 
 function goLogin(){ location.href = "login"; }
 
