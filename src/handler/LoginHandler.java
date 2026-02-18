@@ -21,12 +21,15 @@ public class LoginHandler implements HttpHandler {
 
         if (exchange.getRequestMethod().equalsIgnoreCase("POST")) {
 
-            String formData = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+            String formData = new String(
+                    exchange.getRequestBody().readAllBytes(),
+                    StandardCharsets.UTF_8
+            );
 
             System.out.println("Login attempt: " + formData);
 
-            // TEMP: always success
-            exchange.getResponseHeaders().add("Location", "/");
+            // ✅ redirect to dashboard
+            exchange.getResponseHeaders().add("Location", "/dashboard");
             exchange.sendResponseHeaders(302, -1);
         }
     }
@@ -40,13 +43,9 @@ public class LoginHandler implements HttpHandler {
             return;
         }
 
-        FileInputStream fis = new FileInputStream(file);
-
-        byte[] data = fis.readAllBytes();
-        fis.close();
+        byte[] data = new FileInputStream(file).readAllBytes();
 
         exchange.getResponseHeaders().set("Content-Type", "text/html");
-
         exchange.sendResponseHeaders(200, data.length);
 
         OutputStream os = exchange.getResponseBody();

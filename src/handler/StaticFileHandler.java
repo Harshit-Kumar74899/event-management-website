@@ -3,17 +3,18 @@ package handler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 public class StaticFileHandler implements HttpHandler {
 
-    private final String root;
+    private final File rootDir;
 
     public StaticFileHandler(String root) {
-        this.root = root;
+
+        // 🔥 Important fix for Render
+        this.rootDir = new File(System.getProperty("user.dir"), root);
+
+        System.out.println("Static root: " + rootDir.getAbsolutePath());
     }
 
     @Override
@@ -22,19 +23,20 @@ public class StaticFileHandler implements HttpHandler {
         String path = exchange.getRequestURI().getPath();
 
         if (path.equals("/")) {
-            path = "/index.html"; // Index page
+            path = "/index.html";
         }
 
-        File file = new File(root + path);
+        File file = new File(rootDir, path);
+
+        System.out.println("Requested file: " + file.getAbsolutePath());
 
         if (!file.exists() || file.isDirectory()) {
+            System.out.println("File not found");
             exchange.sendResponseHeaders(404, -1);
             return;
         }
 
-        FileInputStream fis = new FileInputStream(file);
-        byte[] data = fis.readAllBytes();
-        fis.close();
+        byte[] data = new FileInputStream(file).readAllBytes();
 
         exchange.getResponseHeaders()
                 .set("Content-Type", getContentType(path));
@@ -47,12 +49,15 @@ public class StaticFileHandler implements HttpHandler {
     }
 
     private String getContentType(String path) {
+
         String lower = path.toLowerCase();
+
         if (lower.endsWith(".html")) return "text/html; charset=UTF-8";
         if (lower.endsWith(".css")) return "text/css; charset=UTF-8";
         if (lower.endsWith(".js")) return "application/javascript; charset=UTF-8";
         if (lower.endsWith(".png")) return "image/png";
         if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return "image/jpeg";
+
         return "application/octet-stream";
     }
 }
