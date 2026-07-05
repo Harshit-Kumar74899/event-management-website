@@ -32,8 +32,15 @@ footer{text-align:center;padding:20px;background:#3d2b1f;color:#fff;margin-top:4
 </style></head>
 <body>
 <header>
-  <img class="logo-img" src="images/logo1.png" alt="Logo">
-  <nav><a href="home.html">Home</a><a href="service.html">Service</a><a href="about.html">Contact</a></nav>
+  <!-- ✅ FIXED LOGO PATH -->
+  <img class="logo-img" src="../images/logo1.png" alt="Logo">
+
+  <!-- ✅ FIXED NAVIGATION -->
+  <nav>
+    <a href="../home.html">Home</a>
+    <a href="../service.html">Service</a>
+    <a href="../about.html">About</a>
+  </nav>
 </header>
 
 <main class="wrap">
@@ -45,16 +52,28 @@ footer{text-align:center;padding:20px;background:#3d2b1f;color:#fff;margin-top:4
     <div class="pill">🌼 Traditional</div>
   </section>
 
-  <section class="gallery">
-    <div class="ph" onclick="openLB('images/services/haldi1.jpg')"><img src="images/services/haldi1.jpg" alt=""></div>
-    <div class="ph" onclick="openLB('images/services/haldi2.jpg')"><img src="images/services/haldi2.jpg" alt=""></div>
-    <div class="ph" onclick="openLB('images/services/haldi3.jpg')"><img src="images/services/haldi3.jpg" alt=""></div>
-    <div class="ph" onclick="openLB('images/services/haldi4.jpg')"><img src="images/services/haldi4.jpg" alt=""></div>
-  </section>
+ <section class="gallery">
+    <div class="ph" onclick="openLB('../images/h1.png')">
+        <img src="../images/h1.png" alt="">
+    </div>
+
+    <div class="ph" onclick="openLB('../images/h2.png')">
+        <img src="../images/h2.png" alt="">
+    </div>
+
+    <div class="ph" onclick="openLB('../images/h3.png')">
+        <img src="../images/h3.png" alt="">
+    </div>
+
+    <div class="ph" onclick="openLB('../images/h4.png')">
+        <img src="../images/h4.png" alt="">
+    </div>
+</section>
 
   <div class="actions">
-    <a class="btn btn-primary" href="appointment.html">Book Appointment</a>
-    <a class="btn btn-ghost" href="past-events.html">View Past Events</a>
+    <!-- ✅ ALREADY CORRECT -->
+    <a class="btn btn-primary" href="../appointment.html">Schedule Appointment</a>
+    <a class="btn btn-ghost" href="../past-events.html">View Past Events</a>
   </div>
 </main>
 

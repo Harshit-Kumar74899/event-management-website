@@ -32,8 +32,15 @@ footer{text-align:center;padding:20px;background:#3d2b1f;color:#fff;margin-top:4
 </style></head>
 <body>
 <header>
-  <img class="logo-img" src="images/logo1.png" alt="Logo">
-  <nav><a href="home.html">Home</a><a href="service.html">Service</a><a href="about.html">Contact</a></nav>
+  <!-- ✅ FIXED LOGO PATH -->
+  <img class="logo-img" src="../images/logo1.png" alt="Logo">
+
+  <!-- ✅ FIXED NAVIGATION -->
+  <nav>
+    <a href="../home.html">Home</a>
+    <a href="../service.html">Service</a>
+    <a href="../about.html">About</a>
+  </nav>
 </header>
 
 <main class="wrap">
@@ -46,15 +53,16 @@ footer{text-align:center;padding:20px;background:#3d2b1f;color:#fff;margin-top:4
   </section>
 
   <section class="gallery">
-    <div class="ph" onclick="openLB('images/services/catering1.jpg')"><img src="images/services/catering1.jpg" alt=""></div>
-    <div class="ph" onclick="openLB('images/services/catering2.jpg')"><img src="images/services/catering2.jpg" alt=""></div>
-    <div class="ph" onclick="openLB('images/services/catering3.jpg')"><img src="images/services/catering3.jpg" alt=""></div>
-    <div class="ph" onclick="openLB('images/services/catering4.jpg')"><img src="images/services/catering4.jpg" alt=""></div>
+    <div class="ph" onclick="openLB('../images/c1.png')"><img src="../images/c1.png" alt=""></div>
+    <div class="ph" onclick="openLB('../images/c2.png')"><img src="../images/c2.png" alt=""></div>
+    <div class="ph" onclick="openLB('../images/c3.png')"><img src="../images/c3.png" alt=""></div>
+    <div class="ph" onclick="openLB('../images/c4.png')"><img src="../images/c4.png" alt=""></div>
   </section>
 
-  <div class="actions">
-    <a class="btn btn-primary" href="appointment.html">Book Appointment</a>
-    <a class="btn btn-ghost" href="past-events.html">View Past Events</a>
+ <div class="actions">
+    <!-- ✅ ALREADY CORRECT -->
+    <a class="btn btn-primary" href="../appointment.html">Schedule Appointment</a>
+    <a class="btn btn-ghost" href="../past-events.html">View Past Events</a>
   </div>
 </main>
 

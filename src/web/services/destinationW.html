@@ -35,11 +35,14 @@
 </head>
 <body>
 <header>
-  <img class="logo-img" src="images/logo1.png" alt="Logo">
+  <!-- ✅ FIXED LOGO PATH -->
+  <img class="logo-img" src="../images/logo1.png" alt="Logo">
+
+  <!-- ✅ FIXED NAVIGATION -->
   <nav>
-    <a href="home.html">Home</a>
-    <a href="service.html">Service</a>
-    <a href="about.html">Contact</a>
+    <a href="../home.html">Home</a>
+    <a href="../service.html">Service</a>
+    <a href="../about.html">About</a>
   </nav>
 </header>
 
@@ -53,15 +56,16 @@
   </section>
 
   <section class="gallery">
-    <div class="ph" onclick="openLB('images/services/destination1.jpg')"><img src="images/services/destination1.jpg" alt=""></div>
-    <div class="ph" onclick="openLB('images/services/destination2.jpg')"><img src="images/services/destination2.jpg" alt=""></div>
-    <div class="ph" onclick="openLB('images/services/destination3.jpg')"><img src="images/services/destination3.jpg" alt=""></div>
-    <div class="ph" onclick="openLB('images/services/destination4.jpg')"><img src="images/services/destination4.jpg" alt=""></div>
+    <div class="ph" onclick="openLB('../images/dw1.png')"><img src="../images/dw1.png" alt=""></div>
+    <div class="ph" onclick="openLB('../images/dw2.png')"><img src="../images/dw2.png" alt=""></div>
+    <div class="ph" onclick="openLB('../images/dw3.png')"><img src="../images/dw3.png" alt=""></div>
+    <div class="ph" onclick="openLB('../images/dw4.png')"><img src="../images/dw4.png" alt=""></div>
   </section>
 
-  <div class="actions">
-    <a class="btn btn-primary" href="appointment.html">Book Appointment</a>
-    <a class="btn btn-ghost" href="past-events.html">View Past Events</a>
+<div class="actions">
+    <!-- ✅ ALREADY CORRECT -->
+    <a class="btn btn-primary" href="../appointment.html">Schedule Appointment</a>
+    <a class="btn btn-ghost" href="../past-events.html">View Past Events</a>
   </div>
 </main>
 

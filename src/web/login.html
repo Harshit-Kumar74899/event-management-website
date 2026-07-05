@@ -63,7 +63,6 @@ h2{
     letter-spacing:1px;
 }
 
-/* 🔔 MESSAGE BOX */
 #msg{
     margin-bottom:15px;
     color:#c62828;
@@ -71,7 +70,6 @@ h2{
     font-size:14px;
 }
 
-/* INPUTS */
 input{
     width:100%;
     padding:13px;
@@ -88,7 +86,6 @@ input:focus{
     box-shadow:0 0 8px rgba(106,27,154,0.4);
 }
 
-/* BUTTON */
 button{
     width:100%;
     padding:14px;
@@ -108,17 +105,21 @@ button:hover{
     box-shadow:0 10px 20px rgba(0,0,0,0.3);
 }
 
-/* LINK */
-a{
-    display:inline-block;
+/* 🔥 NEW: bottom links container */
+.bottom-links{
+    display:flex;
+    justify-content:space-between;
     margin-top:20px;
+}
+
+.bottom-links a{
     color:#6a1b9a;
     text-decoration:none;
     font-size:14px;
     font-weight:500;
 }
 
-a:hover{
+.bottom-links a:hover{
     text-decoration:underline;
 }
 </style>
@@ -130,7 +131,6 @@ a:hover{
     <div class="box">
         <h2>User Login</h2>
 
-        <!-- 🔔 MESSAGE FROM BACKEND -->
         <div id="msg"></div>
 
         <form action="/login" method="post">
@@ -139,18 +139,32 @@ a:hover{
             <button type="submit">Login</button>
         </form>
 
-        <a href="/">← Back to Home</a>
+        <!-- 🔥 FIXED POSITION -->
+        <div style="display:flex; justify-content:space-between; margin-top:20px;">
+
+    <!-- 🔁 Left side: Forgot Password -->
+    <a href="forgot-password.html" style="color:#6a1b9a;">
+        Forgot Password
+    </a>
+
+    <!-- 🔁 Right side: Signup -->
+    <a href="/signup" style="color:#6a1b9a;">
+        Signup
+    </a>
+
+</div>
+
     </div>
 </div>
 
 <script>
-    const params = new URLSearchParams(window.location.search);
-    const msg = params.get("msg");
+const params = new URLSearchParams(window.location.search);
+const msg = params.get("msg");
 
-    if (msg === "exists") {
-        document.getElementById("msg").innerText =
-            "User already exists. Please login.";
-    }
+if (msg === "exists") {
+    document.getElementById("msg").innerText =
+        "User already exists. Please login.";
+}
 </script>
 
 </body>

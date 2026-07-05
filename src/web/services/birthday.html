@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Birthday Event | Shubh Mangalamh Events</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Poppins',sans-serif;background:radial-gradient(circle at top,#fff6e5,#f1d7ad),linear-gradient(135deg,rgba(182,141,64,.08),rgba(139,94,46,.06));color:#3d2b1f}
@@ -29,11 +33,21 @@ nav a:hover::after{width:100%}
 footer{text-align:center;padding:20px;background:#3d2b1f;color:#fff;margin-top:40px}
 @media(max-width:1000px){header{padding:14px 20px}.wrap{padding:14px 20px 40px}.gallery{grid-template-columns:repeat(2,1fr)}.logo-img{height:58px}}
 @media(max-width:520px){.gallery{grid-template-columns:1fr}.ph img{height:200px}}
-</style></head>
+</style>
+</head>
+
 <body>
+
 <header>
-  <img class="logo-img" src="images/logo1.png" alt="Logo">
-  <nav><a href="home.html">Home</a><a href="service.html">Service</a><a href="about.html">Contact</a></nav>
+  <!-- ✅ FIXED LOGO PATH -->
+  <img class="logo-img" src="../images/logo1.png" alt="Logo">
+
+  <!-- ✅ FIXED NAVIGATION -->
+  <nav>
+    <a href="../home.html">Home</a>
+    <a href="../service.html">Service</a>
+    <a href="../about.html">About</a>
+  </nav>
 </header>
 
 <main class="wrap">
@@ -46,23 +60,41 @@ footer{text-align:center;padding:20px;background:#3d2b1f;color:#fff;margin-top:4
   </section>
 
   <section class="gallery">
-    <div class="ph" onclick="openLB('images/services/birthday1.jpg')"><img src="images/services/birthday1.jpg" alt=""></div>
-    <div class="ph" onclick="openLB('images/services/birthday2.jpg')"><img src="images/services/birthday2.jpg" alt=""></div>
-    <div class="ph" onclick="openLB('images/services/birthday3.jpg')"><img src="images/services/birthday3.jpg" alt=""></div>
-    <div class="ph" onclick="openLB('images/services/birthday4.jpg')"><img src="images/services/birthday4.jpg" alt=""></div>
+    <!-- ✅ FIXED IMAGE PATHS -->
+    <div class="ph" onclick="openLB('../images/bs1.png')">
+      <img src="../images/bs1.png" alt="">
+    </div>
+
+    <div class="ph" onclick="openLB('../images/bs2.png')">
+      <img src="../images/bs2.png" alt="">
+    </div>
+
+    <div class="ph" onclick="openLB('../images/bs3.png')">
+      <img src="../images/bs3.png" alt="">
+    </div>
+
+    <div class="ph" onclick="openLB('../images/bs4.png')">
+      <img src="../images/bs4.png" alt="">
+    </div>
   </section>
 
   <div class="actions">
-    <a class="btn btn-primary" href="appointment.html">Book Appointment</a>
-    <a class="btn btn-ghost" href="past-events.html">View Past Events</a>
+    <!-- ✅ ALREADY CORRECT -->
+    <a class="btn btn-primary" href="../appointment.html">Schedule Appointment</a>
+    <a class="btn btn-ghost" href="../past-events.html">View Past Events</a>
   </div>
 </main>
 
 <footer>© 2021 Shubh Mangalamh Events</footer>
 
-<div class="lightbox" id="lb" onclick="closeLB()"><img id="lbImg" src="" alt=""></div>
+<div class="lightbox" id="lb" onclick="closeLB()">
+  <img id="lbImg" src="" alt="">
+</div>
+
 <script>
 function openLB(src){lbImg.src=src;lb.classList.add('show')}
 function closeLB(){lb.classList.remove('show')}
 </script>
-</body></html>
+
+</body>
+</html>
