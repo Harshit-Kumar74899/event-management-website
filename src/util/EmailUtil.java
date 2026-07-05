@@ -1,87 +1,74 @@
 package util;
 
-import com.sendgrid.SendGrid;
-import com.sendgrid.Request;
-import com.sendgrid.Response;
-import com.sendgrid.Method;
-
-import com.sendgrid.helpers.mail.Mail;
-import com.sendgrid.helpers.mail.objects.Email;
-import com.sendgrid.helpers.mail.objects.Content;
-
-import java.io.IOException;
+import jakarta.mail.*;
+import jakarta.mail.internet.*;
+import java.util.Properties;
 
 public class EmailUtil {
 
-    private static final String API_KEY = System.getenv("SENDGRID_API_KEY");
+    // 🔹 Render ke Environment Variables se aate hain
+    private static final String FROM_EMAIL = getEnv("FROM_EMAIL", "harshitkumar.itm.092004@gmail.com");
+    private static final String APP_PASSWORD = getEnv("APP_PASSWORD", "");
 
-    private static final String FROM_EMAIL = "harshitkumar.itm.092004@gmail.com";
+    private static String getEnv(String key, String defaultValue) {
+        String value = System.getenv(key);
+        return (value == null || value.isEmpty()) ? defaultValue : value;
+    }
+
+    private static Session getSession() {
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        return Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(FROM_EMAIL, APP_PASSWORD);
+            }
+        });
+    }
 
     // ✅ SEND OTP TO USER
     public static void sendOtp(String toEmail, String otp) {
-
-        Email from = new Email(FROM_EMAIL);
-        Email to = new Email(toEmail);
-
-        String subject = "Your OTP Code";
-
-        Content content = new Content(
-                "text/plain",
-                "Your OTP is: " + otp + "\nDo not share this OTP."
-        );
-
-        Mail mail = new Mail(from, subject, to, content);
-
-        SendGrid sg = new SendGrid(API_KEY);
-
-        Request request = new Request();
-
         try {
+            Session session = getSession();
 
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mail.build());
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(FROM_EMAIL));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
+            message.setSubject("Your OTP Code");
+            message.setText("Your OTP is: " + otp + "\nDo not share this OTP.");
 
-            Response response = sg.api(request);
+            Transport.send(message);
 
-            System.out.println("OTP Email sent: " + response.getStatusCode());
+            System.out.println("OTP Email sent successfully to " + toEmail);
 
-        } catch (IOException ex) {
-
+        } catch (Exception ex) {
+            System.out.println("OTP Email FAILED: " + ex.getMessage());
             ex.printStackTrace();
-
         }
     }
 
-
-    // ✅ ADD THIS METHOD (FIXES YOUR ERROR)
+    // ✅ EMAIL TO ADMIN
     public static void sendToAdmin(String subject, String body) {
-
-        Email from = new Email(FROM_EMAIL);
-        Email to = new Email(FROM_EMAIL);
-
-        Content content = new Content("text/plain", body);
-
-        Mail mail = new Mail(from, subject, to, content);
-
-        SendGrid sg = new SendGrid(API_KEY);
-
-        Request request = new Request();
-
         try {
+            Session session = getSession();
 
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mail.build());
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(FROM_EMAIL));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(FROM_EMAIL));
+            message.setSubject(subject);
+            message.setText(body);
 
-            Response response = sg.api(request);
+            Transport.send(message);
 
-            System.out.println("Admin email sent: " + response.getStatusCode());
+            System.out.println("Admin email sent successfully");
 
-        } catch (IOException ex) {
-
+        } catch (Exception ex) {
+            System.out.println("Admin email FAILED: " + ex.getMessage());
             ex.printStackTrace();
-
         }
     }
 }
