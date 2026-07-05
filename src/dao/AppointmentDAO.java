@@ -1,13 +1,9 @@
 package dao;
 
+import util.DBConnection;
 import java.sql.*;
 
 public class AppointmentDAO {
-
-    // ✅ apne DB config se match kar lena
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/wedding";
-    private static final String DB_USER = "root";
-    private static final String DB_PASS = "1234";
 
     public static int insert(String name, String mobile, String service, String otherService,
                              String date, String time, String message) {
@@ -15,7 +11,7 @@ public class AppointmentDAO {
         String sql = "INSERT INTO appointments (name, mobile, service, other_service, preferred_date, preferred_time, message) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, name);
