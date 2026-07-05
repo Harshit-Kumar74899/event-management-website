@@ -6,7 +6,7 @@
       "name": "Run MainServer",
       "request": "launch",
       "mainClass": "MainServer",
-      "cwd": "${workspaceFolder}/src",
+      "cwd": "${workspaceFolder}",
       "classPaths": [
         "${workspaceFolder}/src",
         "${workspaceFolder}/lib/*"
