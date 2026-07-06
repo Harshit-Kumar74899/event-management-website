@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Our Services</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  font-family: Arial, sans-serif;
+  overflow:hidden;
+}
+
+/* BACKGROUND */
+.services-bg{
+  position:fixed;
+  inset:0;
+  background:url("/images/bg1.png") center/cover no-repeat;
+  z-index:-2;
+}
+.services-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.35);
+  z-index:-1;
+}
+
+/* TREE AREA */
+.tree-area{
+  position:relative;
+  width:100%;
+  height:100vh;
+}
+
+/* TITLE */
+.page-title{
+  position:absolute;
+  top:30px;
+  width:100%;
+  text-align:center;
+  font-size:42px;
+  font-weight:bold;
+  color:#ffd700;
+  text-shadow:0 4px 15px rgba(0,0,0,0.6);
+}
+
+/* ======================= */
+/* FRAME WRAPPER (STATIC) */
+/* ======================= */
+.frame-wrap{
+  position:absolute;
+  width:200px;
+}
+
+/* ✅ PIN FIXED (NO SWING) */
+.frame-wrap .pin{
+  position:absolute;
+  top:-98px;
+  left:50%;
+  width:14px;
+  height:14px;
+
+  background: radial-gradient(
+    circle at top left,
+    rgba(225,245,255,0.95),
+    rgba(240,200,100,0.9)
+  );
+
+  border-radius:50%;
+  transform:translateX(-50%);
+  box-shadow:0 4px 6px rgba(0,0,0,0.35);
+  z-index:10;
+}
+
+/* Rope FIXED */
+.frame-wrap .rope{
+  position:absolute;
+  top:-90px;
+  left:50%;
+  width:2px;
+  height:90px;
+  background:#e6c27a;
+  transform:translateX(-50%);
+  z-index:5;
+}
+
+/* ======================= */
+/* FRAME (ONLY THIS SWINGS) */
+/* ======================= */
+.hanging{
+  width:100%;
+  text-align:center;
+  animation:swing 4s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+/* Anchor clickable */
+.hanging a{
+  display:block;
+  text-decoration:none;
+}
+
+/* IMAGE */
+.hanging img{
+  width:100%;
+  border-radius:14px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.5);
+  transition:0.25s ease;
+  display:block;
+}
+
+/* Hover */
+.hanging a:hover img{
+  transform:scale(1.08);
+}
+
+/* Swing animation */
+@keyframes swing{
+  0%{ transform:rotate(2deg); }
+  50%{ transform:rotate(-2deg); }
+  100%{ transform:rotate(2deg); }
+}
+
+/* POSITIONS */
+.s1{ top:60%; left:11%; }
+.s2{ top:12%; left:3%; }
+.s3{ top:27.3%; left:25.1%; }
+.s4{ top:6%; left:83%; }
+.s5{ top:19%; left:45.1%; }
+.s6{ top:33%; left:68%; }
+.s7{ top:63%; left:78%; }
+
+/* ✅ s5 PIN हटाना */
+/* ✅ s5 से सिर्फ PIN हटेगा, rope रहेगी */
+.s5 .pin{
+  display:none;
+}
+
+/* ✅ s5 से सिर्फ PIN हटेगा */
+.s5 .pin{
+  display:none;
+}
+
+
+/* 📱 MOBILE FIX */
+@media (max-width:768px){
+
+  body{ overflow:auto; }
+
+  .tree-area{
+    height:auto;
+    padding:120px 0 40px;
+  }
+
+  .frame-wrap{
+    position:static;
+    margin:25px auto;
+    width:85%;
+    max-width:320px;
+  }
+
+  .pin,.rope{
+    display:none;
+  }
+
+  .hanging{
+    animation:none;
+  }
+
+  .page-title{
+    position:relative;
+    margin-bottom:20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="services-bg"></div>
+<div class="services-overlay"></div>
+
+<div class="tree-area">
+  <div class="page-title">Our Services</div>
+
+  <!-- FRAME 1 -->
+  <div class="frame-wrap s1">
+    <div class="pin"></div>
+    <div class="rope"></div>
+    <div class="hanging">
+      <a href="services/proposal.html">
+        <img src="/images/s1.png">
+      </a>
+    </div>
+  </div>
+
+  <!-- FRAME 2 -->
+  <div class="frame-wrap s2">
+    <div class="pin"></div>
+    <div class="rope"></div>
+    <div class="hanging">
+      <a href="services/birthday.html">
+        <img src="/images/s2.png">
+      </a>
+    </div>
+  </div>
+
+  <!-- FRAME 3 -->
+  <div class="frame-wrap s3">
+    <div class="pin"></div>
+    <div class="rope"></div>
+    <div class="hanging">
+      <a href="services/anniversary.html">
+        <img src="/images/s3.png">
+      </a>
+    </div>
+  </div>
+
+  <!-- FRAME 4 -->
+  <div class="frame-wrap s4">
+    <div class="pin"></div>
+    <div class="rope"></div>
+    <div class="hanging">
+      <a href="services/catering.html">
+        <img src="/images/s4.png">
+      </a>
+    </div>
+  </div>
+
+  <!-- FRAME 5 (NO PIN) -->
+  <div class="frame-wrap s5">
+    <div class="hanging">
+      <div class="rope"></div>
+      <a href="services/wedding.html">
+        <img src="/images/s5.png">
+      </a>
+    </div>
+  </div>
+
+  <!-- FRAME 6 -->
+  <div class="frame-wrap s6">
+    <div class="pin"></div>
+    <div class="rope"></div>
+    <div class="hanging">
+      <a href="services/destinationW.html">
+        <img src="/images/s6.png">
+      </a>
+    </div>
+  </div>
+
+  <!-- FRAME 7 -->
+  <div class="frame-wrap s7">
+    <div class="pin"></div>
+    <div class="rope"></div>
+    <div class="hanging">
+      <a href="services/haldi.html">
+        <img src="/images/s7.png">
+      </a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

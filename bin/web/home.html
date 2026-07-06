@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shubh Mangalamh Events</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+body{
+  font-family:'Poppins', sans-serif;
+  background:
+    radial-gradient(circle at top, #fff8f0, #f3e1c7),
+    linear-gradient(135deg, rgba(182,141,64,0.15), rgba(139,94,46,0.12));
+  color:#3d2b1f;
+}
+
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 60px;
+  background: rgba(255,255,255,0.4);
+  backdrop-filter: blur(8px);
+}
+
+.logo-img{
+  height:200px;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.18));
+}
+
+nav a{
+  margin-left:30px;
+  text-decoration:none;
+  color:#4b2e1f;
+  font-weight:500;
+  position:relative;
+}
+
+nav a:hover{ color:#b68d40; }
+
+nav a::after{
+  content:'';
+  position:absolute;
+  width:0;
+  height:2px;
+  background:linear-gradient(90deg,#b68d40,#8b5e2e);
+  left:0;
+  bottom:-5px;
+  transition:0.3s;
+}
+nav a:hover::after{ width:100%; }
+
+.hero{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  padding:80px 60px;
+  gap:30px;
+  align-items:center;
+}
+
+.hero-text h1{
+  font-family:'Playfair Display', serif;
+  font-size:52px;
+  margin-bottom:20px;
+  background: linear-gradient(135deg,#8b5e2e,#d4af37);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.hero-text p{
+  font-size:18px;
+  opacity:0.85;
+  margin-bottom:20px;
+}
+
+.hero-link{
+  display:inline-block;
+  padding:14px 36px;
+  background: linear-gradient(135deg,#d4af37,#8b5e2e);
+  color:#fff;
+  border-radius:30px;
+  text-decoration:none;
+  transition:0.3s;
+}
+
+.hero-link:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 30px rgba(0,0,0,0.25);
+}
+
+.hero-card{
+  background: linear-gradient(135deg,#fffaf3,#fff3e0);
+  border-radius:20px;
+  padding:40px;
+  text-align:center;
+  box-shadow:0 30px 70px rgba(0,0,0,0.18);
+  position:relative;
+}
+
+.hero-card::before{
+  content:'';
+  position:absolute;
+  inset:15px;
+  border:2px dashed #d4af37;
+  border-radius:15px;
+}
+
+.book-appointment-bottom{
+  padding:0 60px;
+  display:flex;
+  justify-content:flex-end;
+}
+
+.info-row{
+  padding:20px 60px;
+  display:grid;
+  grid-template-columns:1fr 1.2fr;
+  gap:20px;
+}
+
+.terms-wrap, .reviews-wrap{
+  background: linear-gradient(135deg,#ffffff,#fff8ef);
+  border-radius:20px;
+  padding:24px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.12);
+}
+
+.review-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.review-card{
+  background: linear-gradient(135deg,#fffaf0,#fff3e0);
+  padding:15px;
+  border-radius:12px;
+}
+
+.add-review input, .add-review textarea, .add-review select{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+
+.btn{
+  margin-top:10px;
+  padding:10px;
+  background: linear-gradient(135deg,#b68d40,#8b5e2e);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+}
+
+footer{
+  text-align:center;
+  padding:20px;
+  background:#3d2b1f;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="images/logo1.png" class="logo-img">
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="service.html">Service</a>
+    <a href="about.html">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <h1>Shubh Mangalamh Events</h1>
+    <p>Traditional elegance with a modern royal touch.</p>
+    <a class="hero-link" href="past-events.html">Past Event</a>
+  </div>
+
+  <div class="hero-card">
+    <h2>Wedding Invitation</h2>
+    <p>Save The Date</p>
+  </div>
+</section>
+
+<div class="book-appointment-bottom">
+  <a class="hero-link" href="appointment.html">Schedule Appointment</a>
+</div>
+
+<section class="info-row">
+
+  <div class="terms-wrap">
+    <h2>Terms & Conditions</h2>
+    <ul>
+      <li>50% advance required</li>
+      <li>Balance before 7 days</li>
+      <li>No refund on cancellation</li>
+    </ul>
+  </div>
+
+  <div class="reviews-wrap">
+    <h2>Reviews</h2>
+
+    <div class="review-grid">
+      <div class="review-card">Amazing service ⭐⭐⭐⭐⭐</div>
+      <div class="review-card">Very professional ⭐⭐⭐⭐</div>
+    </div>
+
+    <div class="add-review">
+      <input placeholder="Your Name">
+      <textarea placeholder="Write review"></textarea>
+
+      <!-- ⭐ Rating Added -->
+      <select id="rating">
+        <option value="⭐⭐⭐⭐⭐">5 Star</option>
+        <option value="⭐⭐⭐⭐">4 Star</option>
+        <option value="⭐⭐⭐">3 Star</option>
+        <option value="⭐⭐">2 Star</option>
+        <option value="⭐">1 Star</option>
+      </select>
+
+      <button class="btn">Submit</button>
+    </div>
+
+  </div>
+
+</section>
+
+<footer>
+© 2021 Shubh Mangalamh Events
+</footer>
+
+<!-- 🔥 SCRIPT ADDED -->
+<script>
+const btn = document.querySelector(".btn");
+const nameInput = document.querySelector(".add-review input");
+const messageInput = document.querySelector(".add-review textarea");
+const ratingInput = document.getElementById("rating");
+const reviewGrid = document.querySelector(".review-grid");
+
+btn.addEventListener("click", function() {
+  let name = nameInput.value.trim();
+  let message = messageInput.value.trim();
+  let rating = ratingInput.value;
+
+  if(name === "" || message === "") {
+    alert("Please fill all fields");
+    return;
+  }
+
+  let newReview = document.createElement("div");
+  newReview.classList.add("review-card");
+
+  newReview.innerHTML = `<b>${name}</b><br>${message} ${rating}`;
+
+  reviewGrid.appendChild(newReview);
+
+  nameInput.value = "";
+  messageInput.value = "";
+  ratingInput.value = "⭐⭐⭐⭐⭐";
+});
+</script>
+
+</body>
+</html>

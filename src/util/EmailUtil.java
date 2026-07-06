@@ -14,7 +14,7 @@ public class EmailUtil {
     private static final String FROM_EMAIL = "harshitkumar.itm.092004@gmail.com";
 
     // ✅ Gmail App Password (NOT your normal password)
-    private static final String APP_PASSWORD = "layhtnntykauzymi";
+    private static final String APP_PASSWORD = "ziobcyhwuufjegeg";
 
     public static void sendToAdmin(String subject, String body) throws Exception {
 

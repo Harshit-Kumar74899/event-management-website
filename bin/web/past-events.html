@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Past Events | Shubh Mangalamh Events</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *{ margin:0; padding:0; box-sizing:border-box; }
+
+    body{
+      font-family:'Poppins', sans-serif;
+      background:
+        radial-gradient(circle at top, #fff6e5, #f1d7ad),
+        linear-gradient(135deg, rgba(182,141,64,0.08), rgba(139,94,46,0.06));
+      color:#3d2b1f;
+      overflow-x:hidden;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:18px 60px;
+    }
+
+    .logo-img{
+      height:120px;
+      width:auto;
+      display:block;
+      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.18));
+    }
+
+    nav a{
+      margin-left:26px;
+      text-decoration:none;
+      color:#3d2b1f;
+      font-weight:500;
+      position:relative;
+    }
+
+    nav a::after{
+      content:'';
+      position:absolute;
+      width:0;
+      height:2px;
+      background:#b68d40;
+      left:0;
+      bottom:-5px;
+      transition:0.3s;
+    }
+    nav a:hover::after{ width:100%; }
+
+    .hero{
+      padding: 26px 60px 10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .hero h1{
+      font-family:'Playfair Display', serif;
+      font-size:40px;
+      color:#3d2b1f;
+      line-height:1.15;
+    }
+
+    .hero p{
+      opacity:.82;
+      margin-top:8px;
+      max-width:720px;
+      line-height:1.6;
+    }
+
+    .pill{
+      display:inline-block;
+      padding:10px 14px;
+      border-radius:999px;
+      background: rgba(182,141,64,0.14);
+      border:1px solid rgba(182,141,64,0.25);
+      font-weight:600;
+      white-space:nowrap;
+    }
+
+    .wrap{ padding: 18px 60px 60px; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:18px;
+    }
+
+    .card{
+      background:#fff;
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 18px 45px rgba(0,0,0,0.12);
+      border:1px solid rgba(0,0,0,0.06);
+      transition: transform .25s ease;
+    }
+
+    .card:hover{ transform: translateY(-6px); }
+
+    /* ✅ THUMB + SLIDESHOW */
+    .thumb{
+      height:190px;
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+    }
+
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      position:absolute;
+      inset:0;
+      display:block;
+      cursor:pointer;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+
+    .thumb img:first-child{
+      opacity:1;
+      z-index:0;
+    }
+
+    .thumb img:nth-child(2){
+      opacity:0;
+      z-index:1;
+      animation: showSecond 6s infinite;
+    }
+
+    @keyframes showSecond{
+      0%   {opacity:0;}
+      49%  {opacity:0;}
+      50%  {opacity:1;}
+      100% {opacity:1;}
+    }
+
+    .tag{
+      position:absolute;
+      top:12px;
+      left:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(0,0,0,0.55);
+      color:#fff;
+      font-size:12px;
+      z-index:5;
+      pointer-events:none;
+    }
+
+    .content{ padding:16px; }
+
+    .content h3{
+      font-size:18px;
+      margin-bottom:6px;
+      font-family:'Playfair Display', serif;
+    }
+
+    .meta{
+      font-size:13px;
+      opacity:.78;
+      margin-bottom:10px;
+    }
+
+    .desc{
+      font-size:14px;
+      line-height:1.6;
+      opacity:.9;
+    }
+
+    footer{
+      text-align:center;
+      padding:22px;
+      background:#3d2b1f;
+      color:#fff;
+    }
+
+    /* ✅ FULLSCREEN LIGHTBOX (same slideshow) */
+    .lightbox{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.88);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      cursor:pointer; /* click anywhere to close */
+    }
+
+    .lightbox.show{ display:flex; }
+
+    .lightbox-inner{
+      width:min(1100px, 92vw);
+      height:min(88vh, 680px);
+      position:relative;
+      overflow:hidden;
+      border-radius:14px;
+      box-shadow:0 0 28px rgba(255,255,255,0.18);
+      cursor:default;
+    }
+
+    .lightbox-inner img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      position:absolute;
+      inset:0;
+      display:block;
+      background:rgba(0,0,0,0.25);
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+
+    .lightbox-inner img:nth-child(1){ opacity:1; z-index:0; }
+    .lightbox-inner img:nth-child(2){
+      opacity:0;
+      z-index:1;
+      animation: showSecond 6s infinite;
+    }
+
+    @media(max-width:900px){
+      .grid{ grid-template-columns: repeat(2, 1fr); }
+      header{ padding:16px 20px; }
+      .hero{ padding:22px 20px 8px; }
+      .wrap{ padding: 14px 20px 40px; }
+    }
+
+    @media(max-width:600px){
+      .grid{ grid-template-columns: 1fr; }
+      .logo-img{ height:58px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <img src="/images/logo1.png" class="logo-img" alt="Logo">
+
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="service.html">Service</a>
+    <a href="about.html">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <h1>Past Events</h1>
+    <p>Here are some highlights from our previous events.</p>
+  </div>
+  <div class="pill">✨ Memories That Stay Forever</div>
+</section>
+
+<main class="wrap">
+  <div class="grid">
+
+    <!-- ✅ Event 1 -->
+    <div class="card">
+      <div class="thumb" data-img1="/images/w_pe1.jpeg" data-img2="/images/w_pe2.jpeg">
+        <span class="tag">Wedding</span>
+        <img src="/images/w_pe1.jpeg" alt="" onclick="openLightboxFromImg(this,event)">
+        <img src="/images/w_pe2.jpeg" alt="" onclick="openLightboxFromImg(this,event)">
+      </div>
+      <div class="content">
+        <h3>Royal Wedding Setup</h3>
+        <div class="meta">📍 Indore • 🎉 Grand Decoration</div>
+        <div class="desc">Premium stage, floral entry, lighting & decor.</div>
+      </div>
+    </div>
+
+    <!-- ✅ Event 2 -->
+    <div class="card">
+      <div class="thumb" data-img1="/images/r_pe1.png" data-img2="/images/r_pe2.png">
+        <span class="tag">Reception</span>
+        <img src="/images/r_pe1.png" alt="" onclick="openLightboxFromImg(this,event)">
+        <img src="/images/r_pe2.png" alt="" onclick="openLightboxFromImg(this,event)">
+      </div>
+      <div class="content">
+        <h3>Reception & Cocktail</h3>
+        <div class="meta">📍 Indore • 🥂 Hospitality</div>
+        <div class="desc">Elegant welcome, lighting, catering support.</div>
+      </div>
+    </div>
+
+    <!-- ✅ Event 3 -->
+    <div class="card">
+      <div class="thumb" data-img1="/images/b_pe1.jpeg" data-img2="/images/b_pe2.jpeg">
+        <span class="tag">Birthday</span>
+        <img src="/images/b_pe1.jpeg" alt="" onclick="openLightboxFromImg(this,event)">
+        <img src="/images/b_pe2.jpeg" alt="" onclick="openLightboxFromImg(this,event)">
+      </div>
+      <div class="content">
+        <h3>Birthday Celebration</h3>
+        <div class="meta">📍 Indore • 🎈 Theme Decor</div>
+        <div class="desc">Balloons, backdrop, cake table setup.</div>
+      </div>
+    </div>
+
+    <!-- ✅ Event 4 -->
+    <div class="card">
+      <div class="thumb" data-img1="/images/h_pe1.jpeg" data-img2="/images/h_pe2.png">
+        <span class="tag">Haldi</span>
+        <img src="/images/h_pe1.jpeg" alt="" onclick="openLightboxFromImg(this,event)">
+        <img src="/images/h_pe2.png" alt="" onclick="openLightboxFromImg(this,event)">
+      </div>
+      <div class="content">
+        <h3>Haldi & Mehendi Decor</h3>
+        <div class="meta">📍 Indore • 🌼 Floral Theme</div>
+        <div class="desc">Traditional vibes with modern touch.</div>
+      </div>
+    </div>
+
+    <!-- ✅ Event 5 -->
+    <div class="card">
+      <div class="thumb" data-img1="/images/c_pe1.jpeg" data-img2="/images/c_pe2.png">
+        <span class="tag">Catering</span>
+        <img src="/images/c_pe1.jpeg" alt="" onclick="openLightboxFromImg(this,event)">
+        <img src="/images/c_pe2.png" alt="" onclick="openLightboxFromImg(this,event)">
+      </div>
+      <div class="content">
+        <h3>Premium Catering</h3>
+        <div class="meta">📍 Indore • 🍽 Hygienic</div>
+        <div class="desc">Menu planning, live counters & staff.</div>
+      </div>
+    </div>
+
+    <!-- ✅ Event 6 -->
+    <div class="card">
+      <div class="thumb" data-img1="/images/ph_pe1.jpeg" data-img2="/images/ph_pe2.png">
+        <span class="tag">Photography</span>
+        <img src="/images/ph_pe1.jpeg" alt="" onclick="openLightboxFromImg(this,event)">
+        <img src="/images/ph_pe2.png" alt="" onclick="openLightboxFromImg(this,event)">
+      </div>
+      <div class="content">
+        <h3>Photography & Videography</h3>
+        <div class="meta">📍 Indore • 📸 Cinematic</div>
+        <div class="desc">Full coverage, reels & highlights.</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  © 2021 Shubh Mangalamh Events
+</footer>
+
+<!-- ✅ Lightbox Popup (click anywhere to close) -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <!-- stopPropagation so clicking on image box doesn't close -->
+  <div class="lightbox-inner" onclick="event.stopPropagation()">
+    <img id="lbImg1" src="" alt="">
+    <img id="lbImg2" src="" alt="">
+  </div>
+</div>
+
+<script>
+  function openLightboxFromImg(imgEl, e){
+    e.stopPropagation();
+
+    const thumb = imgEl.closest(".thumb");
+    const img1 = thumb?.getAttribute("data-img1") || imgEl.src;
+    const img2 = thumb?.getAttribute("data-img2") || imgEl.src;
+
+    // ✅ If user clicked 2nd image, show that first in lightbox
+    const clickedSrc = imgEl.getAttribute("src") || imgEl.src;
+    const first = clickedSrc.includes(img2) ? img2 : img1;
+    const second = (first === img1) ? img2 : img1;
+
+    document.getElementById("lbImg1").src = first;
+    document.getElementById("lbImg2").src = second;
+
+    document.getElementById("lightbox").classList.add("show");
+  }
+
+  function closeLightbox(){
+    document.getElementById("lightbox").classList.remove("show");
+  }
+</script>
+
+</body>
+</html>

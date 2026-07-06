@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify OTP</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #6b4f1d, #8b6a2b);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            background: #fff1dc;
+            padding: 40px;
+            border-radius: 18px;
+            width: 380px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            color: #7a2bbf;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 2px solid #f0b35c;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(to right, #ffb6c1, #ff8fa3);
+            color: #6a0dad;
+            font-weight: bold;
+        }
+
+        .error {
+            margin-top: 15px;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Verify OTP</h2>
+
+    <!-- 🔥 SIMPLE FORM (NO JS FETCH) -->
+    <form action="/verify-otp" method="post">
+
+        <!-- email query se aayega -->
+        <input type="hidden" name="email" id="email">
+
+        <input type="text"
+               name="otp"
+               placeholder="Enter OTP"
+               required>
+
+        <button type="submit">Verify OTP</button>
+    </form>
+
+    <div id="error" class="error"></div>
+</div>
+
+<script>
+    // ✅ email URL se lo
+    const params = new URLSearchParams(window.location.search);
+    const email = params.get("email");
+    const error = params.get("error");
+
+    if (email) {
+        document.getElementById("email").value = email;
+    }
+
+    // ❌ wrong otp case
+   if (error === "wrong") {
+  document.getElementById("error").innerText = "Wrong OTP";
+} else {
+  document.getElementById("error").innerText = "";
+}
+
+</script>
+
+</body>
+</html>

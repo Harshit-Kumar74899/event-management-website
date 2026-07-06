@@ -146,7 +146,7 @@ public class SignupHandler implements HttpHandler {
         System.out.println("🔐 OTP is: " + otp);
 
         final String from = "harshitkumar.itm.092004@gmail.com";
-        final String appPassword = "layhtnntykauzymi";
+        final String appPassword = "ziobcyhwuufjegeg";
 
         Properties props = new Properties();
         props.put("mail.transport.protocol", "smtps");
