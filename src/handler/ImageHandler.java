@@ -3,49 +3,41 @@ package handler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
 
 public class ImageHandler implements HttpHandler {
-
-    private static final String IMAGE_DIR = "src/web/images";
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
 
         String path = exchange.getRequestURI().getPath();
+        // example: /images/b1.jpeg
 
-        // remove "/images"
-        path = path.replace("/images", "");
+        // 🔥 Load from classpath (/web/images/...)
+        InputStream is =
+                getClass().getResourceAsStream("/web" + path);
 
-        File file = new File(IMAGE_DIR + path);
-
-        if (!file.exists()) {
+        if (is == null) {
             exchange.sendResponseHeaders(404, -1);
             return;
         }
 
-        FileInputStream fis = new FileInputStream(file);
-        byte[] data = fis.readAllBytes();
-        fis.close();
+        String contentType = getMimeType(path);
+        exchange.getResponseHeaders()
+                .add("Content-Type", contentType);
 
-        exchange.getResponseHeaders().set("Content-Type", getContentType(path));
-
+        byte[] data = is.readAllBytes();
         exchange.sendResponseHeaders(200, data.length);
-
-        OutputStream os = exchange.getResponseBody();
-        os.write(data);
-        os.close();
+        exchange.getResponseBody().write(data);
+        exchange.close();
     }
 
-    private String getContentType(String path) {
-
+    private String getMimeType(String path) {
         if (path.endsWith(".png")) return "image/png";
-        if (path.endsWith(".jpg")) return "image/jpeg";
-        if (path.endsWith(".jpeg")) return "image/jpeg";
-
+        if (path.endsWith(".jpg") || path.endsWith(".jpeg")) return "image/jpeg";
+        if (path.endsWith(".gif")) return "image/gif";
+        if (path.endsWith(".webp")) return "image/webp";
         return "application/octet-stream";
     }
 }

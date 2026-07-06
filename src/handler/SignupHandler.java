@@ -1,20 +1,25 @@
 package handler;
 
+import jakarta.mail.*;
+import jakarta.mail.internet.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import dao.UserDAO;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class SignupHandler implements HttpHandler {
 
+    // 🔹 OTP STORE
     public static Map<String, String> otpStore = new HashMap<>();
+
+    // 🔹 TEMP USER STORE
     public static Map<String, TempUser> tempUserStore = new HashMap<>();
 
+    // 🔹 TEMP USER CLASS
     public static class TempUser {
         public String name;
         public String email;
@@ -27,95 +32,168 @@ public class SignupHandler implements HttpHandler {
         }
     }
 
-    private static final String FILE_PATH = "src/web/signup.html";
-
     @Override
     public void handle(HttpExchange exchange) throws IOException {
 
+        /* =======================
+           GET → SIGNUP PAGE
+           ======================= */
         if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
+            byte[] page = getClass()
+                    .getResourceAsStream("/web/signup.html")
+                    .readAllBytes();
 
-            sendFile(exchange, FILE_PATH);
+            exchange.sendResponseHeaders(200, page.length);
+            exchange.getResponseBody().write(page);
+            exchange.close();
             return;
         }
 
-        if (exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+        /* =======================
+           ONLY POST ALLOWED
+           ======================= */
+        if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+            exchange.sendResponseHeaders(405, -1);
+            exchange.close();
+            return;
+        }
 
-            String formData = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+        /* =======================
+           READ FORM DATA
+           ======================= */
+        String body = new String(
+                exchange.getRequestBody().readAllBytes(),
+                StandardCharsets.UTF_8
+        );
 
-            Map<String, String> data = parseFormData(formData);
+        String name = null;
+        String email = null;
+        String password = null;
 
-            String name = data.get("name");
-            String email = data.get("email");
-            String password = data.get("password");
+        for (String pair : body.split("&")) {
+            String[] kv = pair.split("=", 2);
+            if (kv.length == 2) {
+                String key = kv[0];
+                String value = URLDecoder.decode(kv[1], "UTF-8");
 
-            // generate OTP
-            String otp = String.valueOf(100000 + new Random().nextInt(900000));
-
-            otpStore.put(email, otp);
-            tempUserStore.put(email, new TempUser(name, email, password));
-
-            System.out.println("OTP for " + email + " is: " + otp);
-
-            // TODO: send email here using EmailUtil
-            try {
-                util.EmailUtil.sendOtp(email, otp);
-            } catch (Exception e) {
-                e.printStackTrace();
+                if (key.equals("name")) name = value;
+                if (key.equals("email")) email = value;
+                if (key.equals("password")) password = value;
             }
-
-
-            String response = "otp_sent";
-
-            exchange.sendResponseHeaders(200, response.length());
-
-            OutputStream os = exchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
         }
-    }
 
-    private void sendFile(HttpExchange exchange, String path) throws IOException {
+        // ✅ NORMALIZE EMAIL
+        if (email != null) {
+            email = email.trim().toLowerCase();
+        }
 
-        File file = new File(path);
+        System.out.println("Signup Data ? " + name + ", " + email);
 
-        if (!file.exists()) {
-            exchange.sendResponseHeaders(404, -1);
+        if (email == null || email.isEmpty()) {
+            exchange.sendResponseHeaders(400, -1);
+            exchange.close();
             return;
         }
 
-        FileInputStream fis = new FileInputStream(file);
+        /* =======================
+           USER ALREADY EXISTS
+           ======================= */
+        if (UserDAO.emailExists(email)) {
 
-        byte[] data = fis.readAllBytes();
-        fis.close();
+            System.out.println("⚠️ User already exists: " + email);
 
-        exchange.getResponseHeaders().set("Content-Type", "text/html");
-
-        exchange.sendResponseHeaders(200, data.length);
-
-        OutputStream os = exchange.getResponseBody();
-        os.write(data);
-        os.close();
-    }
-
-    private Map<String, String> parseFormData(String formData) throws UnsupportedEncodingException {
-
-        Map<String, String> map = new HashMap<>();
-
-        String[] pairs = formData.split("&");
-
-        for (String pair : pairs) {
-
-            String[] keyValue = pair.split("=");
-
-            String key = URLDecoder.decode(keyValue[0], "UTF-8");
-
-            String value = keyValue.length > 1
-                    ? URLDecoder.decode(keyValue[1], "UTF-8")
-                    : "";
-
-            map.put(key, value);
+            // 🔥 fetch() ke liye plain text response
+            exchange.sendResponseHeaders(200, 6);
+            exchange.getResponseBody().write("exists".getBytes());
+            exchange.close();
+            return;
         }
 
-        return map;
+        /* =======================
+           GENERATE OTP (ONLY ONCE)
+           ======================= */
+        String otp;
+        if (otpStore.containsKey(email)) {
+            otp = otpStore.get(email);
+        } else {
+            otp = String.valueOf(new Random().nextInt(900000) + 100000);
+            otpStore.put(email, otp);
+        }
+
+        System.out.println("===== DEBUG START =====");
+        System.out.println("EMAIL = " + email);
+        System.out.println("OTP   = " + otp);
+        System.out.println("===== DEBUG END =====");
+
+        // 🧠 STORE TEMP USER
+        tempUserStore.put(email, new TempUser(name, email, password));
+
+        // 📧 SEND OTP MAIL
+        sendOtpEmail(email, otp);
+
+        // 🔥 fetch() ke liye success signal
+        exchange.sendResponseHeaders(200, 3);
+        exchange.getResponseBody().write("otp".getBytes());
+        exchange.close();
+    }
+
+    /* =======================
+       OTP EMAIL FUNCTION
+       ======================= */
+    private void sendOtpEmail(String to, String otp) {
+
+        System.out.println("📧 Sending OTP to: " + to);
+        System.out.println("🔐 OTP is: " + otp);
+
+        final String from = "harshitkumar.itm.092004@gmail.com";
+        final String appPassword = "layhtnntykauzymi";
+
+        Properties props = new Properties();
+        props.put("mail.transport.protocol", "smtps");
+        props.put("mail.smtps.host", "smtp.gmail.com");
+        props.put("mail.smtps.port", "465");
+        props.put("mail.smtps.auth", "true");
+        props.put("mail.smtps.ssl.enable", "true");
+        props.put("mail.smtps.ssl.trust", "smtp.gmail.com");
+
+        try {
+            Session session = Session.getInstance(props, new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(from, appPassword);
+                }
+            });
+
+            Message message = new MimeMessage(session);
+
+            // 🔥 DISPLAY NAME (like "Jia from Unstop")
+            message.setFrom(new InternetAddress(
+                    from,
+                    "Royal Wedding Decor • OTP Service"
+            ));
+
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(to)
+            );
+
+            message.setSubject("Your OTP Verification Code");
+
+            message.setText(
+                    "Hello,\n\n" +
+                    "Your OTP for Royal Wedding Decor is: " + otp + "\n\n" +
+                    "Please do not share this OTP with anyone.\n\n" +
+                    "— Royal Wedding Decor"
+            );
+
+            Transport transport = session.getTransport("smtps");
+            transport.connect();
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+
+            System.out.println("✅ OTP MAIL SENT SUCCESSFULLY");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

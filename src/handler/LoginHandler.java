@@ -2,91 +2,116 @@ package handler;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import dao.UserDAO;
 
-import java.io.*;
+import java.io.IOException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
 public class LoginHandler implements HttpHandler {
 
-    private static final String FILE_PATH = "src/web/login.html";
-
     @Override
     public void handle(HttpExchange exchange) throws IOException {
 
+        /* =======================
+           GET → LOGIN PAGE
+           ======================= */
         if (exchange.getRequestMethod().equalsIgnoreCase("GET")) {
 
-            sendFile(exchange, FILE_PATH);
+            byte[] page = getClass()
+                    .getResourceAsStream("/web/login.html")
+                    .readAllBytes();
+
+            exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
+            exchange.sendResponseHeaders(200, page.length);
+            exchange.getResponseBody().write(page);
+            exchange.close();
             return;
         }
 
-        if (exchange.getRequestMethod().equalsIgnoreCase("POST")) {
-
-    String formData = new String(
-            exchange.getRequestBody().readAllBytes(),
-            StandardCharsets.UTF_8
-    );
-
-    String email = null;
-    String password = null;
-
-    for (String pair : formData.split("&")) {
-        String[] kv = pair.split("=");
-        if (kv[0].equals("email")) {
-            email = java.net.URLDecoder.decode(kv[1], "UTF-8");
-        }
-        if (kv[0].equals("password")) {
-            password = java.net.URLDecoder.decode(kv[1], "UTF-8");
-        }
-    }
-
-    System.out.println("Login attempt: " + email);
-
-    boolean success = dao.UserDAO.login(email, password);
-
-    if (success) {
-
-        // ✅ get user name
-        String name = dao.UserDAO.getNameByEmail(email);
-
-        // ✅ set cookies (SERVER SIDE SESSION)
-        exchange.getResponseHeaders().add(
-                "Set-Cookie",
-                "userEmail=" + email + "; Path=/"
-        );
-        exchange.getResponseHeaders().add(
-                "Set-Cookie",
-                "userName=" + name + "; Path=/"
-        );
-
-        exchange.getResponseHeaders().add("Location", "/dashboard");
-        exchange.sendResponseHeaders(302, -1);
-
-    } else {
-
-        // ❌ invalid login
-        exchange.getResponseHeaders().add("Location", "/login?error=1");
-        exchange.sendResponseHeaders(302, -1);
-    }
-}
-
-    }
-
-    private void sendFile(HttpExchange exchange, String path) throws IOException {
-
-        File file = new File(path);
-
-        if (!file.exists()) {
-            exchange.sendResponseHeaders(404, -1);
+        /* =======================
+           ONLY POST ALLOWED
+           ======================= */
+        if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+            exchange.sendResponseHeaders(405, -1);
+            exchange.close();
             return;
         }
 
-        byte[] data = new FileInputStream(file).readAllBytes();
+        /* =======================
+           READ FORM DATA
+           ======================= */
+        String body = new String(
+                exchange.getRequestBody().readAllBytes(),
+                StandardCharsets.UTF_8
+        );
 
-        exchange.getResponseHeaders().set("Content-Type", "text/html");
-        exchange.sendResponseHeaders(200, data.length);
+        String email = null;
+        String password = null;
 
-        OutputStream os = exchange.getResponseBody();
-        os.write(data);
-        os.close();
+        for (String pair : body.split("&")) {
+            String[] kv = pair.split("=", 2);
+            if (kv.length == 2) {
+                String key = kv[0];
+                String value = URLDecoder.decode(kv[1], StandardCharsets.UTF_8);
+
+                if (key.equals("email")) email = value;
+                if (key.equals("password")) password = value;
+            }
+        }
+
+        System.out.println("🔐 Login Attempt → " + email);
+
+        /* =======================
+           DB LOGIN CHECK
+           ======================= */
+        boolean valid = UserDAO.login(email, password);
+
+        if (valid) {
+
+            // 🔥 FETCH USER NAME
+            String name = UserDAO.getNameByEmail(email);
+            if (name == null || name.trim().isEmpty()) name = "User";
+
+            // ✅ JS safe strings (quotes, newline etc)
+            String safeName = jsEscape(name);
+            String safeEmail = jsEscape(email);
+
+            // ✅ Return HTML+JS that sets storage and redirects
+            String html = ""
+                    + "<!DOCTYPE html>"
+                    + "<html><head><meta charset='UTF-8'><title>Redirecting...</title></head><body>"
+                    + "<script>"
+                    + "var userNameFromLogin = \"" + safeName + "\";"
+                    + "var userEmailFromLogin = \"" + safeEmail + "\";"
+                    + "localStorage.setItem(\"userName\", userNameFromLogin);"
+                    + "localStorage.setItem(\"userEmail\", userEmailFromLogin);"
+                    + "sessionStorage.removeItem(\"welcomeShown\");"
+                    + "window.location.href = \"dashboard.html\";"
+                    + "</script>"
+                    + "</body></html>";
+
+            byte[] resp = html.getBytes(StandardCharsets.UTF_8);
+            exchange.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
+            exchange.sendResponseHeaders(200, resp.length);
+            exchange.getResponseBody().write(resp);
+            exchange.close();
+            return;
+
+        } else {
+            // ❌ LOGIN FAIL
+            exchange.getResponseHeaders().add("Location", "/login?error=invalid");
+            exchange.sendResponseHeaders(302, -1);
+            exchange.close();
+        }
+    }
+
+    // ✅ Escape for JS string
+    private static String jsEscape(String s) {
+        if (s == null) return "";
+        return s.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r");
     }
 }
